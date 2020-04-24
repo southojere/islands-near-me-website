@@ -9,6 +9,7 @@ import GlobalStyle from "./styles/global-styles";
 import theme from "./styles/theme";
 import Routes from "./routes";
 import config from './config'
+require('dotenv').config()
 
 const client = new ApolloClient({
   uri: config.api,
