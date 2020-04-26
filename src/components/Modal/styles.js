@@ -11,8 +11,13 @@ const ModalWrapper = styled(Modal)`
     visual ? sizes[visual] : sizes.small}px!important;
 
   .ant-modal-header {
+    border-radius: 35px;
     padding: 24px 24px;
     border-bottom: 0 !important;
+    background-image: radial-gradient(#e5c142 2px, #fef0bc 2px),
+      radial-gradient(#e5c142 2px, #fef0bc 2px);
+    background-size: calc(20 * 2px) calc(20 * 2px);
+    background-position: 0 0, calc(10 * 2px) calc(10 * 2px);
   }
 
   .ant-modal-close-x {
@@ -76,6 +81,14 @@ const ModalWrapper = styled(Modal)`
       display: none;
     }
   `}
+
+  .ant-modal-content {
+    border-radius: 35px;
+    background-image: radial-gradient(#e5c142 2px, #fef0bc 2px),
+      radial-gradient(#e5c142 2px, #fef0bc 2px);
+    background-size: calc(20 * 2px) calc(20 * 2px);
+    background-position: 0 0, calc(10 * 2px) calc(10 * 2px);
+  }
 `;
 
 export { ModalWrapper };

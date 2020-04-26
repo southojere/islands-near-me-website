@@ -9,6 +9,7 @@ import theme from "./styles/theme";
 import Routes from "./routes";
 import config from "./config";
 import { getAccessToken } from "./helpers/local-storage";
+import './styles/pattern.min.css'
 require("dotenv").config();
 
 const client = new ApolloClient({
