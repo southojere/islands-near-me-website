@@ -1,35 +1,39 @@
 import React from "react";
+import { useMutation } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 import { Tooltip } from "antd";
 
 import { CardContainer, CloseIcon } from "./styles";
-// import { deleteSession } from "../../../../graphql/mutations";
+import { getUser } from "../../../../helpers/local-storage";
 
-const SessionCard = ({
-  id,
-  note,
-  host,
-  dodoCode,
-  currentUser,
-  refetch
-}) => {
-  const { username } = host;
-  const { email } = currentUser;
+const DELETE_SESSION = gql`
+  mutation($id: Int!) {
+    deleteSession(id: $id)
+  }
+`;
 
-  const isOwner = email === host.email;
+const SessionCard = ({ id, note, dodoCode, refetch, owner }) => {
+  const currentUser = getUser();
+  const [deleteSession] = useMutation(DELETE_SESSION);
+
+  const isOwner = `${owner.id}` === `${currentUser.id}`;
 
   /**
    * User can delete their current session if it is listed.
    */
-  const handleSessionDelete = async () => {
+  const handleSessionDelete = () => {
     if (!isOwner) return;
-    // await API.graphql(
-    //   graphqlOperation(deleteSession, {
-    //     input: {
-    //       id
-    //     }
-    //   })
-    // );
-    // refetch();
+    deleteSession({
+      variables: {
+        id: parseInt(id)
+      }
+    })
+      .then(() => {
+        refetch();
+      })
+      .catch(e => {
+        console.log(e);
+      });
   };
 
   return (
@@ -43,7 +47,7 @@ const SessionCard = ({
           />
         </Tooltip>
       )}
-      <div>{username}</div>
+      <div>{owner.username}</div>
       <div>
         <b>DODO CODE:</b> {dodoCode}
       </div>
