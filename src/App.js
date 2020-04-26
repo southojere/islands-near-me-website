@@ -1,20 +1,21 @@
 import React from "react";
-import ApolloClient from "apollo-boost";
+import ApolloClient, { InMemoryCache } from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-import Cookies from "js-cookie";
 import { ThemeProvider } from "styled-components";
 
 import "./App.css";
 import GlobalStyle from "./styles/global-styles";
 import theme from "./styles/theme";
 import Routes from "./routes";
-import config from './config'
-require('dotenv').config()
+import config from "./config";
+import { getAccessToken } from "./helpers/local-storage";
+require("dotenv").config();
 
 const client = new ApolloClient({
   uri: config.api,
+  cache: new InMemoryCache(),
   request: operation => {
-    const token = Cookies.get("access-token");
+    const token = getAccessToken();
     operation.setContext({
       headers: {
         authorization: token ? `Bearer ${token}` : ""
