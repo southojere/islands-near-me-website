@@ -1,4 +1,5 @@
 const USER_KEY = "user";
+const ACCESS_TOKEN = "access-token";
 const suffix = `islandsnearme`;
 
 const getKey = key => `${key}.${suffix}`;
@@ -21,4 +22,21 @@ const clearUser = () => {
   removeItem(USER_KEY);
 };
 
-export { getItem, getUser, setItem, setUser, removeItem, clearUser };
+const setAccessToken = value => {
+  setItem(ACCESS_TOKEN, value);
+};
+
+const getAccessToken = () => {
+  return getItem(ACCESS_TOKEN);
+};
+
+export {
+  getItem,
+  getUser,
+  setItem,
+  setUser,
+  removeItem,
+  clearUser,
+  setAccessToken,
+  getAccessToken
+};
