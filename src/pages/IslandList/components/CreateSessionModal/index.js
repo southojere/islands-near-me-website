@@ -1,28 +1,30 @@
 import React from "react";
-import { Input, Button } from "antd";
+import { Input, Button, Alert } from "antd";
+import { useMutation } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 import TextArea from "antd/lib/input/TextArea";
-import { withFormik } from "formik";
+import { message } from "antd";
+import { Formik } from "formik";
 import * as yup from "yup";
 
 import Modal from "../../../../components/Modal";
 import { FormItem, LocationWrapper, LocationLabel, Disclaimer } from "./styles";
 import { EnvironmentOutlined } from "@ant-design/icons";
 
-import { getUser } from "../../../../helpers/local-storage";
-import { findUsersSession } from "../../../../helpers/graphql/session";
+const CREATE_SESSION = gql`
+  mutation($input: SessionInput!) {
+    createSession(input: $input) {
+      id
+    }
+  }
+`;
 
 const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
+  const [createSession] = useMutation(CREATE_SESSION);
+  const [error, setError] = React.useState("");
   const [fetchingLocation, setFetchingLocation] = React.useState(false);
-  const {
-    setFieldValue,
-    handleSubmit,
-    errors,
-    values,
-    isSubmitting
-  } = formikProps;
-  const { dodoCode, note } = values;
 
-  const fetchLocation = () => {
+  const fetchLocation = setFieldValue => {
     setFetchingLocation(true);
     navigator.geolocation.getCurrentPosition(
       res => {
@@ -41,7 +43,7 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
     );
   };
 
-  const RenderModelBody = () => {
+  const RenderModelBody = ({ dodoCode, note }, errors, setFieldValue) => {
     return (
       <>
         <FormItem
@@ -50,6 +52,15 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
           extra={errors.dodoCode}
           validateStatus={!!errors.dodoCode ? "error" : ""}
         >
+          {error && (
+            <Alert
+              message={error}
+              type={"error"}
+              showIcon
+              onClose={() => setError("")}
+            />
+          )}
+          <br />
           <Input
             required
             type="text"
@@ -69,7 +80,7 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
             setFieldValue("note", value);
           }}
         />
-        <LocationWrapper onClick={fetchLocation}>
+        <LocationWrapper onClick={() => fetchLocation(setFieldValue)}>
           <Button
             type="primary"
             shape="circle"
@@ -88,69 +99,98 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
   };
 
   return (
-    <Modal
-      title={"Create Session"}
-      component={() => RenderModelBody()}
-      actions={[
-        <Button
-          type="primary"
-          block
-          onClick={() => {
-            handleSubmit();
-          }}
-          loading={isSubmitting}
-        >
-          Create
-        </Button>
-      ]}
-      onCancel={onCancel}
-      opened={opened}
-      onSubmit={handleSubmit}
-    />
+    <Formik
+      initialValues={{
+        dodoCode: "",
+        note: "",
+        coords: {
+          latitude: "",
+          longitude: ""
+        }
+      }}
+      validationSchema={() =>
+        yup.object().shape({
+          dodoCode: yup.string().required("Please enter your Dodo Code"),
+          note: yup.string(),
+          coords: yup
+            .object()
+            .shape({
+              latitude: yup.string().required(),
+              longitude: yup.string().required()
+            })
+            .required("Location is required")
+        })
+      }
+      onSubmit={(values, { setSubmitting, props }) => {
+        setSubmitting(true);
+        createSession({
+          variables: {
+            input: {
+              note: values.note,
+              dodoCode: values.dodoCode,
+              latitude: `${values.coords.latitude}`,
+              longitude: `${values.coords.longitude}`
+            }
+          }
+        }).then(res => {
+            message.success('Done!')
+            if (onComplete) onComplete();
+        }).catch(e => {
+          setError(e.toString());
+          setSubmitting(false);
+        });
+        setSubmitting(false);
+      }}
+    >
+      {({ values, errors, isSubmitting, handleSubmit, setFieldValue }) => (
+        <Modal
+          title={"Create Session"}
+          component={() => RenderModelBody(values, errors, setFieldValue)}
+          actions={[
+            <Button
+              type="primary"
+              block
+              onClick={() => {
+                handleSubmit();
+              }}
+              loading={isSubmitting}
+            >
+              Create
+            </Button>
+          ]}
+          onCancel={onCancel}
+          opened={opened}
+          onSubmit={handleSubmit}
+        />
+      )}
+    </Formik>
   );
 };
 
-export default withFormik({
-  mapPropsToValues: () => ({
-    dodoCode: "",
-    note: "",
-    coords: {
-      latitude: "",
-      longitude: ""
-    }
-  }),
-  validationSchema: yup.object().shape({
-    dodoCode: yup.string().required("Please enter your Dodo Code"),
-    note: yup.string(),
-    coords: yup
-      .object()
-      .shape({
-        latitude: yup.string().required(),
-        longitude: yup.string().required()
-      })
-      .required("Location is required")
-  }),
-  handleSubmit: async (values, { setSubmitting, props }) => {
-    setSubmitting(true);
-    const currentUser = getUser();
-    const session = await findUsersSession(currentUser.id);
-    if (session) {
-      // TODO: display message saying they have to close their current session
-      return;
-    }
-    // await API.graphql(
-    //   graphqlOperation(createSession, {
-    //     input: {
-    //       dodoCode: values.dodoCode,
-    //       note: values.note,
-    //       sessionHostId: currentUser.id,
-    //       hostUserId: currentUser.id,
-    //       latitude: parseFloat(values.coords.latitude),
-    //       longitude: parseFloat(values.coords.longitude)
-    //     }
-    //   })
-    // );
-    if (props.onComplete) props.onComplete();
-    setSubmitting(false);
-  }
-})(SessionModal);
+export default SessionModal;
+// ({
+
+//   handleSubmit: async (values, { setSubmitting, props }) => {
+//     setSubmitting(true);
+//     const currentUser = getUser();
+//     const session = await findUsersSession(currentUser.id);
+//     if (session) {
+//       // TODO: display message saying they have to close their current session
+//       return;
+//     }
+//     // await API.graphql(
+//     //   graphqlOperation(createSession, {
+//     //     input: {
+//     //       dodoCode: values.dodoCode,
+//     //       note: values.note,
+//     //       sessionHostId: currentUser.id,
+//     //       hostUserId: currentUser.id,
+//     //       latitude: parseFloat(values.coords.latitude),
+//     //       longitude: parseFloat(values.coords.longitude)
+//     //     }
+//     //   })
+//     // );
+//     if (props.onComplete) props.onComplete();
+//     setSubmitting(false);
+//   }
+// })(SessionModal);
