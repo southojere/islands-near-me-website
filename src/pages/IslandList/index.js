@@ -12,7 +12,6 @@ import {
 import SessionCard from "./components/SessionCard";
 import { ReloadOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import SessionModal from "./components/CreateSessionModal";
-import { getUser } from "../../helpers/local-storage";
 
 const SESSIONS_QUERY = gql`
   query sessions {
@@ -23,6 +22,11 @@ const SESSIONS_QUERY = gql`
       dodoCode
       latitude
       longitude
+      host {
+        id
+        username
+        email
+      }
     }
   }
 `;
@@ -31,45 +35,18 @@ const IslandsNearMe = () => {
   // page state
   const [limit] = React.useState(20);
   const [page, setPage] = React.useState(1);
-  const [nextToken, setNextToken] = React.useState(null);
 
-  // util/helper state
-  const [refetchCount, setRefetchCount] = React.useState(0);
-//   const [loading, setLoading] = React.useState(true);
   const [displaySessionModel, setModal] = React.useState(false);
+  const { loading, data, refetch} = useQuery(SESSIONS_QUERY);
 
-  // data
-  const currentUser = getUser();
-  const { loading, error, data } = useQuery(SESSIONS_QUERY);
-  const [sessions, setSessions] = React.useState([]);
-
-  React.useEffect(() => {
-    // setLoading(true);
-    // Promise.all([
-    //   API.graphql(
-    //     graphqlOperation(listSessions, {
-    //       limit,
-    //       nextToken
-    //     })
-    //   )
-    // ])
-    //   .then(([{ data }]) => {
-    //     const { listSessions } = data;
-    //     setSessions(listSessions.items);
-    //     setNextToken(listSessions.nextToken);
-    //   })
-    //   .finally(() => setLoading(false));
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [limit, refetchCount]);
-
-  const refetch = () => setRefetchCount(refetchCount + 1);
 
   return (
     <PageWrapper>
+        {console.log(loading)}
       <Header>
         <h2 style={{ textAlign: "center" }}>Islands Near Me</h2>
         <ActionContainer>
-          <IconWrapper onClick={refetch}>
+          <IconWrapper onClick={() => refetch()}>
             <ReloadOutlined style={{ fontSize: "24px" }} spin={loading} />
           </IconWrapper>
           <IconWrapper>
@@ -84,7 +61,7 @@ const IslandsNearMe = () => {
       {!loading && (
         <ListWrapper>
           {data.listSessions.map(session => {
-            const { id, note, dodoCode, hostId } = session;
+            const { id, note, dodoCode, hostId, host } = session;
             return (
               <SessionCard
                 key={`session-card-${id}`}
@@ -92,8 +69,8 @@ const IslandsNearMe = () => {
                 note={note}
                 dodoCode={dodoCode}
                 host={hostId}
-                currentUser={currentUser}
                 refetch={refetch}
+                owner={host}
               />
             );
           })}

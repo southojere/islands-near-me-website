@@ -1,17 +1,14 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import {
   EyeOutlined,
   CommentOutlined,
-  StarOutlined,
   SettingOutlined,
   LogoutOutlined,
   LoginOutlined
 } from "@ant-design/icons";
 
-import { signOut } from "../../helpers/auth";
 import { PageWrapper, MenuTitle, MenuGrid, MenuItem } from "./styles";
 import { getUser, clearUser } from "../../helpers/local-storage";
 
@@ -73,7 +70,6 @@ const Home = () => {
   const history = useHistory();
   const [user, setUser] = React.useState();
   const [inFocusMenuItem, setMenuItem] = React.useState("");
-  const { loading, error, data } = useQuery(USERS);
 
   React.useState(() => {
     const user = getUser();

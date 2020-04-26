@@ -10,14 +10,17 @@ import {
 } from "@ant-design/icons";
 
 import { FormWrapper, SignUpButton, Header, PageWrapper } from "./styles";
-import { setUser } from "../../helpers/local-storage";
+import { setUser, setAccessToken } from "../../helpers/local-storage";
 
 const LOGIN_USER = gql`
   mutation($username: String!, $password: String!) {
     login(username: $username, password: $password) {
-      id
-      username
-      email
+      user {
+        id
+        username
+        email
+      }
+      accessToken
     }
   }
 `;
@@ -50,12 +53,17 @@ const Login = () => {
           }).catch(e => {
             setError(e.toString());
           });
-          const {
-            data: { login }
-          } = res;
-          if (login && login.id) {
-            setUser(login);
-            history.push("/");
+
+          if (res) {
+            const {
+              data: { login }
+            } = res;
+
+            if (login && login.user.id) {
+              setUser(login.user);
+              setAccessToken(login.accessToken);
+              history.push("/");
+            }
           }
           setLoading(false);
         }}
