@@ -2,6 +2,7 @@ import React from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { Tooltip } from "antd";
+import { get } from "lodash";
 
 import { CardContainer, CloseIcon } from "./styles";
 import { getUser } from "../../../../helpers/local-storage";
@@ -16,7 +17,7 @@ const SessionCard = ({ id, note, dodoCode, refetch, owner }) => {
   const currentUser = getUser();
   const [deleteSession] = useMutation(DELETE_SESSION);
 
-  const isOwner = `${owner.id}` === `${currentUser.id}`;
+  const isOwner = `${owner.id}` === `${get(currentUser, "id", null)}`;
 
   /**
    * User can delete their current session if it is listed.

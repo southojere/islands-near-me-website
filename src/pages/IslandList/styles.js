@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Pagination } from "antd";
+import { Pagination, Select } from "antd";
 
 const PageWrapper = styled.div`
   position: relative;
@@ -54,11 +54,43 @@ const ActionContainer = styled.div`
   flex-direction: row;
 `;
 
+const CustomSelect = styled(Select)`
+  .ant-select-selector {
+    border: none;
+    outline: none;
+    &:hover {
+      background: repeating-linear-gradient(
+        -45deg,
+        #f6d476,
+        #f6d476 10px,
+        #fbc16e 10px,
+        #fbc16e 20px
+      );
+    }
+  }
+  margin-right: 1rem;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  > div {
+    margin-right: 1rem;
+  }
+`;
+
+const Text = styled.p`
+  text-align: ${props => props.center};
+  width:100%;
+`;
 export {
   Header,
   PageWrapper,
   ListWrapper,
   IconWrapper,
   CustomPagination,
-  ActionContainer
+  ActionContainer,
+  CustomSelect,
+  FilterContainer,
+  Text
 };

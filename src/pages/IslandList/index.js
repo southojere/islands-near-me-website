@@ -1,31 +1,45 @@
 import React from "react";
 import { gql } from "apollo-boost";
+import { get } from "lodash";
 import { useQuery } from "@apollo/react-hooks";
+import {
+  ReloadOutlined,
+  PlusCircleOutlined,
+  SearchOutlined
+} from "@ant-design/icons";
+import { Select, Input } from "antd";
+
+import SessionCard from "./components/SessionCard";
+import SessionModal from "./components/CreateSessionModal";
 import {
   Header,
   PageWrapper,
   ListWrapper,
   CustomPagination,
   ActionContainer,
-  IconWrapper
+  IconWrapper,
+  CustomSelect,
+  FilterContainer,
+  Text
 } from "./styles";
-import SessionCard from "./components/SessionCard";
-import { ReloadOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import SessionModal from "./components/CreateSessionModal";
+import config from "../../config";
 
 const SESSIONS_QUERY = gql`
-  query sessions {
-    listSessions {
-      id
-      note
-      hostId
-      dodoCode
-      latitude
-      longitude
-      host {
+  query sessions($filter: SessionSearchInput!) {
+    listSessions(filter: $filter) {
+      total
+      sessions {
         id
-        username
-        email
+        note
+        hostId
+        dodoCode
+        latitude
+        longitude
+        host {
+          id
+          username
+          email
+        }
       }
     }
   }
@@ -33,19 +47,40 @@ const SESSIONS_QUERY = gql`
 
 const IslandsNearMe = () => {
   // page state
-  const [limit] = React.useState(20);
+  const [filterState, setFilterState] = React.useState({
+    type: "NEARME"
+  });
+
+  // pagination filters
   const [page, setPage] = React.useState(1);
 
   const [displaySessionModel, setModal] = React.useState(false);
-  const { loading, data, refetch} = useQuery(SESSIONS_QUERY);
+  const { loading, data, error, refetch } = useQuery(SESSIONS_QUERY, {
+    variables: {
+      filter: {
+        skip: (page - 1) * config.query.limit,
+        limit: config.query.limit
+      }
+    }
+  });
 
-
+  //   const { total, sessions } = data ? data : { total: 0, sessions: [] };
+  const { total, sessions } = get(data, "listSessions", {
+    total: 0,
+    sessions: []
+  });
   return (
     <PageWrapper>
-        {console.log(loading)}
       <Header>
         <h2 style={{ textAlign: "center" }}>Islands Near Me</h2>
         <ActionContainer>
+          <IconWrapper>
+            <SearchOutlined
+              title="Apply search"
+              style={{ fontSize: "24px" }}
+              onClick={() => setModal(true)}
+            />
+          </IconWrapper>
           <IconWrapper onClick={() => refetch()}>
             <ReloadOutlined style={{ fontSize: "24px" }} spin={loading} />
           </IconWrapper>
@@ -57,29 +92,52 @@ const IslandsNearMe = () => {
           </IconWrapper>
         </ActionContainer>
       </Header>
+      <FilterContainer>
+        <CustomSelect
+          defaultValue="NEAR ME"
+          style={{ width: 120 }}
+          onChange={val => {
+            setFilterState({ ...filterState, type: val });
+          }}
+        >
+          <Select.Option value={"NEAR ME"}>NEAR ME</Select.Option>
+          <Select.Option value={"ALL"}>ALL</Select.Option>
+        </CustomSelect>
+        <div>
+          <Input placeholder="Search" className="secondary-color" />
+        </div>
+      </FilterContainer>
 
-      {!loading && (
+      <br />
+      <br />
+      {loading ? (
+        <Text>Loading islands near you...</Text>
+      ) : (
         <ListWrapper>
-          {data.listSessions.map(session => {
-            const { id, note, dodoCode, hostId, host } = session;
-            return (
-              <SessionCard
-                key={`session-card-${id}`}
-                id={id}
-                note={note}
-                dodoCode={dodoCode}
-                host={hostId}
-                refetch={refetch}
-                owner={host}
-              />
-            );
-          })}
+          {sessions &&
+            sessions.map(session => {
+              const { id, note, dodoCode, hostId, host } = session;
+              return (
+                <SessionCard
+                  key={`session-card-${id}`}
+                  id={id}
+                  note={note}
+                  dodoCode={dodoCode}
+                  host={hostId}
+                  refetch={refetch}
+                  owner={host}
+                />
+              );
+            })}
+
+          {error && <p>{`>.< ${error.toString()}`}</p>}
         </ListWrapper>
       )}
       <CustomPagination
         simple
         defaultCurrent={page}
-        total={50}
+        current={page}
+        total={total}
         onChange={page => {
           refetch();
           setPage(page);

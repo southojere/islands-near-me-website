@@ -1,5 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
-
+import { createGlobalStyle } from "styled-components";
 
 /**
  * Most of those styles are to overwrite ant.design global styles
@@ -44,6 +43,47 @@ const GlobalStyle = createGlobalStyle`
   input, button {
     border: none;
     outline: transparent;
+  }
+  
+  .secondary-color {
+      background:#F8F3E7
+  }
+
+  .ant-select-selector {
+    background:#F8F3E7 !important;
+    border:none;
+}
+
+  .ant-select-dropdown {
+      /* border-radius:15px !important; */
+  }
+
+  .ant-select-selector{
+      /* border-radius:15px !important; */
+
+  }
+
+  .ant-select-item-option-active {
+    background: repeating-linear-gradient(
+        -45deg,
+        #f6d476,
+        #f6d476 10px,
+        #fbc16e 10px,
+        #fbc16e 20px
+      ) !important;
+  }
+
+  .ant-select-item {
+
+    &:hover {
+      background: repeating-linear-gradient(
+        -45deg,
+        #f6d476,
+        #f6d476 10px,
+        #fbc16e 10px,
+        #fbc16e 20px
+      ) !important;
+    }
   }
 
 `;
