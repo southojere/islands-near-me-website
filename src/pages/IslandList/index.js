@@ -20,10 +20,11 @@ import {
   IconWrapper,
   CustomSelect,
   FilterContainer,
-  Text
+  LoaderWrapper
 } from "./styles";
 import config from "../../config";
 import { getUser } from "../../helpers/local-storage";
+import Loader from "../../components/Loader";
 
 const SESSIONS_QUERY = gql`
   query sessions($filter: SessionSearchInput!) {
@@ -101,6 +102,51 @@ const IslandsNearMe = () => {
     );
   };
 
+  const RenderContentBody = () => {
+    if (loading) {
+      return (
+        <LoaderWrapper>
+          <Loader />
+        </LoaderWrapper>
+      );
+    }
+
+    return (
+      <>
+        <ListWrapper>
+          {sessions.map(session => {
+            const { id, note, dodoCode, hostId, host } = session;
+            return (
+              <SessionCard
+                key={`session-card-${id}`}
+                id={id}
+                note={note}
+                dodoCode={dodoCode}
+                host={hostId}
+                refetch={refetch}
+                owner={host}
+              />
+            );
+          })}
+
+          {error && <p>{`>.< ${error.toString()}`}</p>}
+        </ListWrapper>
+
+        <CustomPagination
+          simple
+          current={page}
+          defaultCurrent={1}
+          total={total}
+          pageSize={config.query.limit}
+          onChange={page => {
+            setPage(page);
+            refetch();
+          }}
+        />
+      </>
+    );
+  };
+
   return (
     <PageWrapper>
       <Header>
@@ -120,7 +166,7 @@ const IslandsNearMe = () => {
         </CustomSelect>
         <div>
           <Input
-            placeholder="Search"
+            placeholder="Search username or dodocode"
             className="secondary-color"
             onChange={({ target: { value } }) => {
               setSearchText(value);
@@ -128,42 +174,8 @@ const IslandsNearMe = () => {
           />
         </div>
       </FilterContainer>
-
       <br />
-      <br />
-      {loading ? (
-        <Text>Loading islands near you...</Text>
-      ) : (
-        <ListWrapper>
-          {sessions.map(session => {
-            const { id, note, dodoCode, hostId, host } = session;
-            return (
-              <SessionCard
-                key={`session-card-${id}`}
-                id={id}
-                note={note}
-                dodoCode={dodoCode}
-                host={hostId}
-                refetch={refetch}
-                owner={host}
-              />
-            );
-          })}
-
-          {error && <p>{`>.< ${error.toString()}`}</p>}
-        </ListWrapper>
-      )}
-      <CustomPagination
-        simple
-        current={page}
-        defaultCurrent={1}
-        total={total}
-        pageSize={config.query.limit}
-        onChange={page => {
-          setPage(page);
-          refetch();
-        }}
-      />
+      <RenderContentBody />
       <SessionModal
         opened={displaySessionModel}
         onCancel={() => setModal(false)}

@@ -4,6 +4,7 @@ import { Pagination, Select } from "antd";
 const PageWrapper = styled.div`
   position: relative;
   background: #f79d7b;
+  min-height: 300px;
   border-radius: 35px;
   padding: 2rem;
 `;
@@ -21,7 +22,7 @@ const IconWrapper = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin: 0.5rem;
+  margin-left: 0.5rem;
   &:hover {
     background: repeating-linear-gradient(
       -45deg,
@@ -46,6 +47,7 @@ const Header = styled.div`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin-bottom: 1rem;
 `;
 
 const CustomSelect = styled(Select)`
@@ -73,9 +75,10 @@ const FilterContainer = styled.div`
   }
 `;
 
-const Text = styled.p`
-  text-align: ${props => props.center};
-  width:100%;
+const LoaderWrapper = styled.div`
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
 `;
 export {
   Header,
@@ -86,5 +89,5 @@ export {
   ActionContainer,
   CustomSelect,
   FilterContainer,
-  Text
+  LoaderWrapper
 };
