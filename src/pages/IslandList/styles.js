@@ -34,12 +34,6 @@ const IconWrapper = styled.div`
 `;
 
 const CustomPagination = styled(Pagination)`
-  a {
-    border-radius: 50px !important;
-  }
-  input {
-    border-radius: 50px !important;
-  }
   text-align: center;
 `;
 

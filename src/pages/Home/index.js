@@ -52,7 +52,7 @@ menu.UNAUTH_USER = [
   {
     icon: <EyeOutlined style={{ fontSize: "24px" }} />,
     label: "Islands Near Me",
-    link: "/nearme"
+    link: "/islandsnearme"
   },
   {
     icon: <SettingOutlined style={{ fontSize: "24px" }} />,
