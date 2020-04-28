@@ -23,8 +23,8 @@ const Margin = styled.div`
   max-width: 900px;
   margin: auto;
   padding-top: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 `;
 
 const Layout = props => {
