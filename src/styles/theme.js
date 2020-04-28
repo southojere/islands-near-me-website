@@ -5,7 +5,7 @@ const breakpoints = {
 
 const baseline = 5;
 
-const generateBreakpoint = (width: number, cssMarkup: any) => `
+const generateBreakpoint = (width, cssMarkup) => `
 @media (min-width: ${width}px) {
   ${cssMarkup};
 }
