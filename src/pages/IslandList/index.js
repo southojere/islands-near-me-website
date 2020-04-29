@@ -7,7 +7,7 @@ import {
   PlusCircleOutlined,
   SearchOutlined
 } from "@ant-design/icons";
-import { Select, Input } from "antd";
+import { Select, Input, Slider } from "antd";
 
 import SessionCard from "./components/SessionCard";
 import SessionModal from "./components/CreateSessionModal";
@@ -25,6 +25,11 @@ import {
 import config from "../../config";
 import { getUser } from "../../helpers/local-storage";
 import Loader from "../../components/Loader";
+import {
+  SESSION_FILTERS,
+  DEFAULT_SEARCH_RADIUS,
+  MAX_SEARCH_DISTANCE
+} from "../../constants";
 
 const SESSIONS_QUERY = gql`
   query sessions($filter: SessionSearchInput!) {
@@ -50,12 +55,18 @@ const SESSIONS_QUERY = gql`
 const IslandsNearMe = () => {
   const currentUser = getUser();
   // page state
-  const [listType, setListType] = React.useState("NEARME");
+  const [listType, setListType] = React.useState(SESSION_FILTERS.ALL.VALUE);
+  const [searchRadius, setSearchRadius] = React.useState(DEFAULT_SEARCH_RADIUS);
   const [searchText, setSearchText] = React.useState("");
 
   // pagination filters
   const [page, setPage] = React.useState(1);
   const [keyword, setKeyword] = React.useState("");
+  const [radius, setRadius] = React.useState(DEFAULT_SEARCH_RADIUS);
+  const [currentLocation, setCurrentLocation] = React.useState({
+    latitude: null,
+    longitude: null
+  });
 
   const [displaySessionModel, setModal] = React.useState(false);
   const { loading, data, error, refetch } = useQuery(SESSIONS_QUERY, {
@@ -63,7 +74,11 @@ const IslandsNearMe = () => {
       filter: {
         skip: (page - 1) * config.query.limit,
         limit: config.query.limit,
-        keyword
+        keyword,
+        searchType: listType,
+        nearMeRadius: radius,
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude
       }
     }
   });
@@ -75,6 +90,23 @@ const IslandsNearMe = () => {
 
   const onSearch = () => {
     setKeyword(searchText);
+    setRadius(searchRadius);
+  };
+
+  const fetchLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      res => {
+        const {
+          coords: { latitude, longitude }
+        } = res;
+        console.log(latitude, longitude);
+        setCurrentLocation({
+          latitude: `${latitude}`,
+          longitude: `${longitude}`
+        });
+      },
+      res => {}
+    );
   };
 
   const RenderActions = () => {
@@ -159,10 +191,15 @@ const IslandsNearMe = () => {
           style={{ width: 120 }}
           onChange={val => {
             setListType(val);
+            if (val === SESSION_FILTERS.NEARME.VALUE) {
+              fetchLocation();
+            }
           }}
         >
-          <Select.Option value={"NEAR ME"}>NEAR ME</Select.Option>
-          <Select.Option value={"ALL"}>ALL</Select.Option>
+          <Select.Option value={SESSION_FILTERS.NEARME.VALUE}>
+            NEAR ME
+          </Select.Option>
+          <Select.Option value={SESSION_FILTERS.ALL.VALUE}>ALL</Select.Option>
         </CustomSelect>
         <div>
           <Input
@@ -174,6 +211,19 @@ const IslandsNearMe = () => {
           />
         </div>
       </FilterContainer>
+      <br />
+      {listType === SESSION_FILTERS.NEARME.VALUE && (
+        <div>
+          <p>Select your distance: ({searchRadius} km)</p>
+          <Slider
+            tipFormatter={value => `${value} km`}
+            max={MAX_SEARCH_DISTANCE}
+            onChange={val => setSearchRadius(val)}
+            style={{ width: "200px" }}
+            defaultValue={searchRadius}
+          />
+        </div>
+      )}
       <br />
       <RenderContentBody />
       <SessionModal
