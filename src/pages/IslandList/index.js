@@ -1,7 +1,7 @@
 import React from "react";
 import { gql } from "apollo-boost";
 import { get } from "lodash";
-import { useQuery } from "@apollo/react-hooks";
+import { useLazyQuery } from "@apollo/react-hooks";
 import {
   ReloadOutlined,
   PlusCircleOutlined,
@@ -57,31 +57,40 @@ const IslandsNearMe = () => {
   // page state
   const [listType, setListType] = React.useState(SESSION_FILTERS.ALL.VALUE);
   const [searchRadius, setSearchRadius] = React.useState(DEFAULT_SEARCH_RADIUS);
-  const [searchText, setSearchText] = React.useState("");
+  const [refetchCount, setRefetchCount] = React.useState(0);
 
   // pagination filters
   const [page, setPage] = React.useState(1);
   const [keyword, setKeyword] = React.useState("");
-  const [radius, setRadius] = React.useState(DEFAULT_SEARCH_RADIUS);
   const [currentLocation, setCurrentLocation] = React.useState({
     latitude: null,
     longitude: null
   });
 
   const [displaySessionModel, setModal] = React.useState(false);
-  const { loading, data, error, refetch } = useQuery(SESSIONS_QUERY, {
-    variables: {
-      filter: {
-        skip: (page - 1) * config.query.limit,
-        limit: config.query.limit,
-        keyword,
-        searchType: listType,
-        nearMeRadius: radius,
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude
+
+  const [getSessions, { loading, data, error }] = useLazyQuery(SESSIONS_QUERY);
+
+  React.useEffect(() => {
+    getSessions({
+      variables: {
+        filter: {
+          skip: (page - 1) * config.query.limit,
+          limit: config.query.limit,
+          keyword,
+          searchType: listType,
+          nearMeRadius: searchRadius,
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude
+        }
       }
-    }
-  });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetchCount]);
+
+  const refetch = () => {
+    setRefetchCount(refetchCount + 1);
+  };
 
   const { total, sessions } = get(data, "listSessions", {
     total: 0,
@@ -89,8 +98,7 @@ const IslandsNearMe = () => {
   });
 
   const onSearch = () => {
-    setKeyword(searchText);
-    setRadius(searchRadius);
+    refetch();
   };
 
   const fetchLocation = () => {
@@ -99,7 +107,6 @@ const IslandsNearMe = () => {
         const {
           coords: { latitude, longitude }
         } = res;
-        console.log(latitude, longitude);
         setCurrentLocation({
           latitude: `${latitude}`,
           longitude: `${longitude}`
@@ -164,17 +171,19 @@ const IslandsNearMe = () => {
           {error && <p>{`>.< ${error.toString()}`}</p>}
         </ListWrapper>
 
-        <CustomPagination
-          simple
-          current={page}
-          defaultCurrent={1}
-          total={total}
-          pageSize={config.query.limit}
-          onChange={page => {
-            setPage(page);
-            refetch();
-          }}
-        />
+        {listType !== SESSION_FILTERS.NEARME.VALUE && (
+          <CustomPagination
+            simple
+            current={page}
+            defaultCurrent={1}
+            total={total}
+            pageSize={config.query.limit}
+            onChange={page => {
+              setPage(page);
+              refetch();
+            }}
+          />
+        )}
       </>
     );
   };
@@ -201,15 +210,17 @@ const IslandsNearMe = () => {
           </Select.Option>
           <Select.Option value={SESSION_FILTERS.ALL.VALUE}>ALL</Select.Option>
         </CustomSelect>
-        <div>
-          <Input
-            placeholder="Search username or dodocode"
-            className="secondary-color"
-            onChange={({ target: { value } }) => {
-              setSearchText(value);
-            }}
-          />
-        </div>
+        {listType !== SESSION_FILTERS.NEARME.VALUE && (
+          <div>
+            <Input
+              placeholder="Search username or dodocode"
+              className="secondary-color"
+              onChange={({ target: { value } }) => {
+                setKeyword(value);
+              }}
+            />
+          </div>
+        )}
       </FilterContainer>
       <br />
       {listType === SESSION_FILTERS.NEARME.VALUE && (
