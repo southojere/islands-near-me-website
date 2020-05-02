@@ -6,14 +6,14 @@ import {
   Redirect
 } from "react-router-dom";
 
-import { getCurrentUser } from "./helpers/auth";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Support from "./pages/Support";
+import About from "./pages/About";
 import Layout from "./components/Layout/index";
 import Signup from "./pages/SignUp";
 import IslandsNearMe from "./pages/IslandList";
+import FeatureRequests from "./pages/FeatureRequests";
 import { getUser } from "./helpers/local-storage";
 
 // const PrivateRoute = props => {
@@ -51,7 +51,8 @@ const Routes = () => {
       <Layout>
         <Switch>
           <Route exact path="/islandsnearme" component={IslandsNearMe} />
-          <Route exact path="/support" component={Support} />
+          <Route exact path="/requests" component={FeatureRequests} />
+          <Route exact path="/about" component={About} />
           <PublicLoggedOutRoute exact path="/login" component={Login} />
           <PublicLoggedOutRoute exact path="/signup" component={Signup} />
           <Route exact path="/" component={Home} />

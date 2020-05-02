@@ -18,6 +18,7 @@
     "lodash": "^4.17.15",
     "pattern.css": "^1.0.0",
     "react": "^16.13.1",
+    "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",

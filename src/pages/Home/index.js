@@ -6,8 +6,14 @@ import {
   CommentOutlined,
   SettingOutlined,
   LogoutOutlined,
-  LoginOutlined
+  LoginOutlined,
+  MessageOutlined
 } from "@ant-design/icons";
+import bestFriendIcon from "../../images/bestfriendsicon.png";
+import serviceIcon from "../../images/phonechat.png";
+import loginIcon from "../../images/callresident.png";
+import logoutIcon from "../../images/nookmiles.png";
+import aboutIcon from "../../images/islandinfo.png";
 
 import { PageWrapper, MenuTitle, MenuGrid, MenuItem } from "./styles";
 import { getUser, clearUser } from "../../helpers/local-storage";
@@ -24,23 +30,27 @@ const USERS = gql`
 const menu = {};
 menu.AUTH_USER = [
   {
-    icon: <EyeOutlined style={{ fontSize: "24px" }} />,
+    icon: <img src={bestFriendIcon} alt="People icon"></img>,
     label: "Islands Near Me",
-    link: "/islandsnearme"
+    link: "/islandsnearme",
+    backgroundColor: "radial-gradient(#eebd77,#ed8067 );"
   },
   {
-    icon: <CommentOutlined style={{ fontSize: "24px" }} />,
-    label: "Best Friends List",
-    link: "/friendslist"
+    icon: <img src={serviceIcon} alt="Feature requests icon"></img>,
+    label: "Feature requests",
+    link: "/requests",
+    backgroundColor: "#d2de43"
   },
   {
-    icon: <SettingOutlined style={{ fontSize: "24px" }} />,
-    label: "Settings",
-    link: "/settings"
+    icon: <img src={aboutIcon} alt="About"></img>,
+    label: "About",
+    link: "/about",
+    backgroundColor: "#907b4f"
   },
   {
-    icon: <LogoutOutlined style={{ fontSize: "24px" }} />,
+    icon: <img src={logoutIcon} alt="Logout icon"></img>,
     label: "Logout",
+    backgroundColor: "#8a9af7",
     action: () => {
       clearUser();
       window.location.reload();
@@ -50,19 +60,28 @@ menu.AUTH_USER = [
 
 menu.UNAUTH_USER = [
   {
-    icon: <EyeOutlined style={{ fontSize: "24px" }} />,
+    icon: <img src={bestFriendIcon} alt="people icon"></img>,
     label: "Islands Near Me",
-    link: "/islandsnearme"
+    link: "/islandsnearme",
+    backgroundColor: "radial-gradient(#eebd77,#ed8067 );"
   },
   {
-    icon: <SettingOutlined style={{ fontSize: "24px" }} />,
-    label: "Settings",
-    link: "/settings"
+    icon: <img src={serviceIcon} alt="feature requests icon"></img>,
+    label: "Feature requests",
+    link: "/requests",
+    backgroundColor: "#d2de43"
   },
   {
-    icon: <LoginOutlined style={{ fontSize: "24px" }} />,
+    icon: <img src={aboutIcon} alt="About"></img>,
+    label: "About",
+    link: "/about",
+    backgroundColor: "#907b4f"
+  },
+  {
+    icon: <img src={loginIcon} alt="login icon"></img>,
     label: "Login",
-    link: "/login"
+    link: "/login",
+    backgroundColor: "#9fd9df"
   }
 ];
 
@@ -95,6 +114,7 @@ const Home = () => {
           return (
             <MenuItem
               key={`menu-item-${k}`}
+              backgroundColor={item.backgroundColor}
               onMouseEnter={() => handleMenuItemHover(item)}
               onClick={() => {
                 if (item.action) {

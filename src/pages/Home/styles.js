@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 const PageWrapper = styled.div`
-    background:white;
-    border-radius:35px;
-    padding:1rem;
-`
+  background: white;
+  border-radius: 35px;
+  padding: 1rem;
+`;
 
 const MenuTitle = styled.h2`
   text-align: center;
@@ -12,16 +12,36 @@ const MenuTitle = styled.h2`
 
 const MenuItem = styled.div`
   display: flex;
-  justify-content:center;
-  align-items:center;
+  justify-content: center;
+  align-items: center;
   width: 90px;
   height: 90px;
-  background: wheat;
+  background: ${props => props.backgroundColor && props.backgroundColor};
   border-radius: 25px;
   transition: all 0.5s;
   cursor: pointer;
+  animation: 0.5s ease-in wiggleAnimation;
+
   &:hover {
     transform: scale(1.1);
+  }
+
+  img {
+    display: block;
+    width: 90%;
+    height: 90%;
+  }
+
+  @keyframes wiggleAnimation {
+    0% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
   }
 `;
 
