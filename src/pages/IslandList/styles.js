@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Pagination, Select } from "antd";
+import { Pagination, Select, Empty } from "antd";
 
 const PageWrapper = styled.div`
   position: relative;
@@ -80,6 +80,11 @@ const LoaderWrapper = styled.div`
   right: 2rem;
   bottom: 2rem;
 `;
+
+const EmptyComponent = styled(Empty)`
+    
+`;
+
 export {
   Header,
   PageWrapper,
@@ -89,5 +94,6 @@ export {
   ActionContainer,
   CustomSelect,
   FilterContainer,
-  LoaderWrapper
+  LoaderWrapper,
+  EmptyComponent
 };

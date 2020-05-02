@@ -132,14 +132,18 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
               longitude: `${values.coords.longitude}`
             }
           }
-        }).then(res => {
-            message.success('Done!')
-            if (onComplete) onComplete();
-        }).catch(e => {
-          setError(e.toString());
-          setSubmitting(false);
-        });
-        setSubmitting(false);
+        })
+          .then(res => {
+            message.success("Done!");
+            if (onComplete) {
+              onComplete();
+            }
+            setSubmitting(false);
+          })
+          .catch(e => {
+            setError(e.toString());
+            setSubmitting(false);
+          });
       }}
     >
       {({ values, errors, isSubmitting, handleSubmit, setFieldValue }) => (

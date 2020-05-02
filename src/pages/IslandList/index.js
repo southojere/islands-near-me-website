@@ -1,7 +1,6 @@
 import React from "react";
 import { gql } from "apollo-boost";
-import { get } from "lodash";
-import { useLazyQuery } from "@apollo/react-hooks";
+import { withApollo } from "react-apollo";
 import {
   ReloadOutlined,
   PlusCircleOutlined,
@@ -20,7 +19,8 @@ import {
   IconWrapper,
   CustomSelect,
   FilterContainer,
-  LoaderWrapper
+  LoaderWrapper,
+  EmptyComponent
 } from "./styles";
 import config from "../../config";
 import { getUser } from "../../helpers/local-storage";
@@ -52,50 +52,73 @@ const SESSIONS_QUERY = gql`
   }
 `;
 
-const IslandsNearMe = () => {
+const IslandsNearMe = ({ client }) => {
   const currentUser = getUser();
-  // page state
-  const [listType, setListType] = React.useState(SESSION_FILTERS.ALL.VALUE);
-  const [searchRadius, setSearchRadius] = React.useState(DEFAULT_SEARCH_RADIUS);
   const [refetchCount, setRefetchCount] = React.useState(0);
-
-  // pagination filters
   const [page, setPage] = React.useState(1);
-  const [keyword, setKeyword] = React.useState("");
-  const [currentLocation, setCurrentLocation] = React.useState({
-    latitude: null,
-    longitude: null
+
+  const reducer = (state, newState) => ({ ...state, ...newState });
+  const [searchFields, setSearchState] = React.useReducer(reducer, {
+    currentLocation: {
+      latitude: null,
+      longitude: null
+    },
+    keyword: "",
+    listType: SESSION_FILTERS.ALL.VALUE,
+    searchRadius: DEFAULT_SEARCH_RADIUS
   });
+
+  const [pageState, setPageState] = React.useReducer(reducer, {
+    loading: true,
+    total: 0,
+    sessions: [],
+    error: ""
+  });
+  const { loading, total, sessions, error } = pageState;
 
   const [displaySessionModel, setModal] = React.useState(false);
 
-  const [getSessions, { loading, data, error }] = useLazyQuery(SESSIONS_QUERY);
-
   React.useEffect(() => {
-    getSessions({
-      variables: {
-        filter: {
-          skip: (page - 1) * config.query.limit,
-          limit: config.query.limit,
-          keyword,
-          searchType: listType,
-          nearMeRadius: searchRadius,
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude
-        }
-      }
+    setPageState({
+      loading: true
     });
+    client
+      .query({
+        query: SESSIONS_QUERY,
+        variables: {
+          filter: {
+            skip: (page - 1) * config.query.limit,
+            limit: config.query.limit,
+            keyword: searchFields.keyword,
+            searchType: searchFields.listType,
+            nearMeRadius: searchFields.searchRadius,
+            latitude: searchFields.currentLocation.latitude,
+            longitude: searchFields.currentLocation.longitude
+          }
+        },
+        fetchPolicy: "network-only"
+      })
+      .then(({ data: { listSessions } }) => {
+        if (listSessions) {
+          const { sessions, total } = listSessions;
+          setPageState({
+            total,
+            sessions,
+            loading: false
+          });
+        }
+      })
+      .catch(() => {
+        setPageState({
+          loading: false
+        });
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetchCount]);
 
   const refetch = () => {
     setRefetchCount(refetchCount + 1);
   };
-
-  const { total, sessions } = get(data, "listSessions", {
-    total: 0,
-    sessions: []
-  });
 
   const onSearch = () => {
     refetch();
@@ -107,9 +130,11 @@ const IslandsNearMe = () => {
         const {
           coords: { latitude, longitude }
         } = res;
-        setCurrentLocation({
-          latitude: `${latitude}`,
-          longitude: `${longitude}`
+        setSearchState({
+          currentLocation: {
+            latitude: `${latitude}`,
+            longitude: `${longitude}`
+          }
         });
       },
       res => {}
@@ -167,23 +192,27 @@ const IslandsNearMe = () => {
               />
             );
           })}
+          {sessions.length === 0 && (
+            <EmptyComponent description="No Sessions found" />
+          )}
 
           {error && <p>{`>.< ${error.toString()}`}</p>}
         </ListWrapper>
-
-        {listType !== SESSION_FILTERS.NEARME.VALUE && (
-          <CustomPagination
-            simple
-            current={page}
-            defaultCurrent={1}
-            total={total}
-            pageSize={config.query.limit}
-            onChange={page => {
-              setPage(page);
-              refetch();
-            }}
-          />
-        )}
+        <br />
+        {searchFields.listType !== SESSION_FILTERS.NEARME.VALUE &&
+          sessions.length > 0 && (
+            <CustomPagination
+              simple
+              current={page}
+              defaultCurrent={1}
+              total={total}
+              pageSize={config.query.limit}
+              onChange={page => {
+                setPage(page);
+                refetch();
+              }}
+            />
+          )}
       </>
     );
   };
@@ -199,7 +228,7 @@ const IslandsNearMe = () => {
           defaultValue="ALL"
           style={{ width: 120 }}
           onChange={val => {
-            setListType(val);
+            setSearchState({ listType: val });
             if (val === SESSION_FILTERS.NEARME.VALUE) {
               fetchLocation();
             }
@@ -210,28 +239,28 @@ const IslandsNearMe = () => {
           </Select.Option>
           <Select.Option value={SESSION_FILTERS.ALL.VALUE}>ALL</Select.Option>
         </CustomSelect>
-        {listType !== SESSION_FILTERS.NEARME.VALUE && (
+        {searchFields.listType !== SESSION_FILTERS.NEARME.VALUE && (
           <div>
             <Input
               placeholder="Search username or dodocode"
               className="secondary-color"
               onChange={({ target: { value } }) => {
-                setKeyword(value);
+                setSearchState({ keyword: value });
               }}
             />
           </div>
         )}
       </FilterContainer>
       <br />
-      {listType === SESSION_FILTERS.NEARME.VALUE && (
+      {searchFields.listType === SESSION_FILTERS.NEARME.VALUE && (
         <div>
-          <p>Select your distance: ({searchRadius} km)</p>
+          <p>Select your distance: ({searchFields.searchRadius} km)</p>
           <Slider
             tipFormatter={value => `${value} km`}
             max={MAX_SEARCH_DISTANCE}
-            onChange={val => setSearchRadius(val)}
+            onChange={val => setSearchState({ searchRadius: val })}
             style={{ width: "200px" }}
-            defaultValue={searchRadius}
+            defaultValue={searchFields.searchRadius}
           />
         </div>
       )}
@@ -249,4 +278,4 @@ const IslandsNearMe = () => {
   );
 };
 
-export default IslandsNearMe;
+export default withApollo(IslandsNearMe);
