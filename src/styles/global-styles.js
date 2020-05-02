@@ -26,7 +26,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a, p, span, label, h1, h2, h3, h4, h5, h6, button, input {
-    font-family: ${({ theme }) => theme.fonts.PingFangSC};
+    font-family: ${({ theme }) => theme.fonts.Roboto};
+  }
+  
+  p {
+      margin:0;
   }
 
   ul, li {

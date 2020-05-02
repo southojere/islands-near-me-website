@@ -88,7 +88,7 @@ menu.UNAUTH_USER = [
 const Home = () => {
   const history = useHistory();
   const [user, setUser] = React.useState();
-  const [inFocusMenuItem, setMenuItem] = React.useState("");
+  const [inFocusMenuItem, setMenuItem] = React.useState("Welcome!");
 
   React.useState(() => {
     const user = getUser();

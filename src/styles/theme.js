@@ -14,7 +14,7 @@ const generateBreakpoint = (width, cssMarkup) => `
 const theme = {
   fonts: {
     OpenSans: "Open Sans, sans-serif",
-    PingFangSC: "PingFangSC, sans-serif"
+    Roboto: "Roboto', sans-serif"
   },
   baseline,
   outline: baseline * 4,
