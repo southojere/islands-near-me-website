@@ -49,16 +49,17 @@ menu.UNAUTH_USER = [
     backgroundColor: "radial-gradient(#eebd77,#ed8067 );"
   },
   {
-    icon: <img src={serviceIcon} alt="feature requests icon"></img>,
-    label: "Feature requests",
-    link: "/requests",
-    backgroundColor: "#d2de43"
-  },
-  {
     icon: <img src={aboutIcon} alt="About"></img>,
     label: "About",
     link: "/about",
     backgroundColor: "#907b4f"
+  },
+  {
+    icon: <img src={serviceIcon} alt="feature requests icon"></img>,
+    label: "Feature requests",
+    link: "/requests",
+    disabled: true,
+    backgroundColor: "#d2de43"
   },
   {
     icon: <img src={loginIcon} alt="login icon"></img>,
@@ -97,9 +98,11 @@ const Home = () => {
           return (
             <MenuItem
               key={`menu-item-${k}`}
+              disabled={item.disabled}
               backgroundColor={item.backgroundColor}
               onMouseEnter={() => handleMenuItemHover(item)}
               onClick={() => {
+                if (item.disabled) return;
                 if (item.action) {
                   item.action();
                   return;

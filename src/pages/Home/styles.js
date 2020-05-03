@@ -17,9 +17,10 @@ const MenuItem = styled.div`
   width: 90px;
   height: 90px;
   background: ${props => props.backgroundColor && props.backgroundColor};
+  filter: ${props => props.disabled && "grayscale(100%)"};
   border-radius: 25px;
   transition: all 0.5s;
-  cursor: pointer;
+  cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
   animation: 0.5s ease-in wiggleAnimation;
 
   &:hover {
