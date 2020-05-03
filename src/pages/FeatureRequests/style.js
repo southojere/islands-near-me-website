@@ -12,11 +12,6 @@ const PageWrapper = styled.div`
   background-position: 0 0, calc(10 * 1.5px) calc(10 * 1.5px);
 `;
 
-const SizedBox = styled.div`
-  width: ${props => (props.width ? `${props.width}rem` : "1rem")};
-  height: ${props => (props.height ? `${props.height}rem` : "1rem")};
-`;
-
 const FeedBackTextArea = styled(TextArea)`
   border-radius: 10px;
 `;
@@ -33,4 +28,4 @@ const FeedbackSubmitButton = styled(Button)`
     border:none;
   }
 `;
-export { PageWrapper, FeedBackTextArea, SizedBox, FeedbackSubmitButton };
+export { PageWrapper, FeedBackTextArea, FeedbackSubmitButton };

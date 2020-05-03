@@ -4,12 +4,7 @@ import { withFormik } from "formik";
 import { gql } from "apollo-boost";
 import { compose } from "recompose";
 import * as yup from "yup";
-import {
-  PageWrapper,
-  SizedBox,
-  FeedBackTextArea,
-  FeedbackSubmitButton
-} from "./style";
+import { PageWrapper, FeedBackTextArea, FeedbackSubmitButton } from "./style";
 import { withApollo } from "react-apollo";
 import aboutIcon from "../../images/islandinfo.png";
 
@@ -58,7 +53,7 @@ const FeatureRequests = props => {
               placeholder="Please let us know what you think, any feedback, or any improvements we can make."
             />
           </Form.Item>
-          <SizedBox />
+
           <Form.Item
             hasFeedback
             errors
@@ -77,7 +72,7 @@ const FeatureRequests = props => {
               <Radio value={"help"}>Help</Radio>
             </Radio.Group>
           </Form.Item>
-          <SizedBox />
+
           <FeedbackSubmitButton
             type="primary"
             onClick={() => handleSubmit()}
