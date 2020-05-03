@@ -12,4 +12,35 @@ const SESSION_FILTERS = {
 const DEFAULT_SEARCH_RADIUS = 50; //50km
 const MAX_SEARCH_DISTANCE = 200; // 200km
 
-export { SESSION_FILTERS, DEFAULT_SEARCH_RADIUS, MAX_SEARCH_DISTANCE };
+const VISITORS = {
+  CELESTE: {
+    VALUE: 0,
+    TEXT: "Celeste"
+  },
+  SAHARAH: {
+    VALUE: 2,
+    TEXT: "Saharah"
+  },
+  KICKS: {
+    VALUE: 3,
+    TEXT: "Kicks"
+  },
+  FLICK: {
+    VALUE: 4,
+    TEXT: "Flick"
+  },
+  CJ: {
+    VALUE: 5,
+    TEXT: "CJ"
+  },
+  LEIF: {
+    VALUE: 6,
+    TEXT: "Leif"
+  },
+  REDD: {
+    VALUE: 7,
+    TEXT: "Redd"
+  }
+};
+
+export { SESSION_FILTERS, DEFAULT_SEARCH_RADIUS, MAX_SEARCH_DISTANCE,VISITORS };

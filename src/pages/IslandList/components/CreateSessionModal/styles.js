@@ -22,10 +22,14 @@ const LocationLabel = styled.span`
 `;
 
 const Disclaimer = styled.div`
-text-align:center;
+  text-align: center;
   font-size: 12px;
   color: grey;
   margin-top: 0.5rem;
 `;
 
-export { FormItem, LocationWrapper, LocationLabel, Disclaimer };
+const VistorCheckBoxWrapper = styled.div`
+  margin-top:1rem;
+`;
+
+export { FormItem, LocationWrapper, LocationLabel, Disclaimer, VistorCheckBoxWrapper };

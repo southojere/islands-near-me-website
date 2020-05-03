@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Button, Alert } from "antd";
+import { Input, Button, Alert, Checkbox, Row, Col } from "antd";
 import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import TextArea from "antd/lib/input/TextArea";
@@ -8,8 +8,15 @@ import { Formik } from "formik";
 import * as yup from "yup";
 
 import Modal from "../../../../components/Modal";
-import { FormItem, LocationWrapper, LocationLabel, Disclaimer } from "./styles";
+import {
+  FormItem,
+  LocationWrapper,
+  LocationLabel,
+  Disclaimer,
+  VistorCheckBoxWrapper
+} from "./styles";
 import { EnvironmentOutlined } from "@ant-design/icons";
+import { VISITORS } from "../../../../constants";
 
 const CREATE_SESSION = gql`
   mutation($input: SessionInput!) {
@@ -80,6 +87,52 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
             setFieldValue("note", value);
           }}
         />
+        <VistorCheckBoxWrapper>
+          <Checkbox.Group
+            style={{ width: "100%" }}
+            onChange={myVisitors => {
+              setFieldValue("visitors", myVisitors);
+            }}
+          >
+            <Row>
+              <Col span={8}>
+                <Checkbox value={VISITORS.CELESTE.VALUE}>
+                  {VISITORS.CELESTE.TEXT}
+                </Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value={VISITORS.SAHARAH.VALUE}>
+                  {VISITORS.SAHARAH.TEXT}
+                </Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value={VISITORS.KICKS.VALUE}>
+                  {VISITORS.KICKS.TEXT}
+                </Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value={VISITORS.FLICK.VALUE}>
+                  {VISITORS.FLICK.TEXT}
+                </Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value={VISITORS.CJ.VALUE}>
+                  {VISITORS.CJ.TEXT}
+                </Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value={VISITORS.LEIF.VALUE}>
+                  {VISITORS.LEIF.TEXT}
+                </Checkbox>
+              </Col>
+              <Col span={8}>
+                <Checkbox value={VISITORS.REDD.VALUE}>
+                  {VISITORS.REDD.TEXT}
+                </Checkbox>
+              </Col>
+            </Row>
+          </Checkbox.Group>
+        </VistorCheckBoxWrapper>
         <LocationWrapper onClick={() => fetchLocation(setFieldValue)}>
           <Button
             type="primary"
@@ -106,11 +159,13 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
         coords: {
           latitude: "",
           longitude: ""
-        }
+        },
+        visitors: []
       }}
       validationSchema={() =>
         yup.object().shape({
           dodoCode: yup.string().required("Please enter your Dodo Code"),
+          visitor: yup.array(),
           note: yup.string(),
           coords: yup
             .object()
@@ -122,14 +177,21 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
         })
       }
       onSubmit={(values, { setSubmitting, props }) => {
-        setSubmitting(true);
         createSession({
           variables: {
             input: {
               note: values.note,
               dodoCode: values.dodoCode,
               latitude: `${values.coords.latitude}`,
-              longitude: `${values.coords.longitude}`
+              longitude: `${values.coords.longitude}`,
+              hasRedd: values.visitors.indexOf(VISITORS.REDD.VALUE) !== -1,
+              hasLeif: values.visitors.indexOf(VISITORS.LEIF.VALUE) !== -1,
+              hasCJ: values.visitors.indexOf(VISITORS.CJ.VALUE) !== -1,
+              hasFlick: values.visitors.indexOf(VISITORS.FLICK.VALUE) !== -1,
+              hasKicks: values.visitors.indexOf(VISITORS.KICKS.VALUE) !== -1,
+              hasSaharah:
+                values.visitors.indexOf(VISITORS.SAHARAH.VALUE) !== -1,
+              hasCeleste: values.visitors.indexOf(VISITORS.CELESTE.VALUE) !== -1
             }
           }
         })
@@ -172,29 +234,3 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
 };
 
 export default SessionModal;
-// ({
-
-//   handleSubmit: async (values, { setSubmitting, props }) => {
-//     setSubmitting(true);
-//     const currentUser = getUser();
-//     const session = await findUsersSession(currentUser.id);
-//     if (session) {
-//       // TODO: display message saying they have to close their current session
-//       return;
-//     }
-//     // await API.graphql(
-//     //   graphqlOperation(createSession, {
-//     //     input: {
-//     //       dodoCode: values.dodoCode,
-//     //       note: values.note,
-//     //       sessionHostId: currentUser.id,
-//     //       hostUserId: currentUser.id,
-//     //       latitude: parseFloat(values.coords.latitude),
-//     //       longitude: parseFloat(values.coords.longitude)
-//     //     }
-//     //   })
-//     // );
-//     if (props.onComplete) props.onComplete();
-//     setSubmitting(false);
-//   }
-// })(SessionModal);
