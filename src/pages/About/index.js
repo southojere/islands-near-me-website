@@ -9,7 +9,7 @@ const About = () => {
         body={
           <div>
             <p>
-              Built for fun and with love 💖 This app was developed and maintained
+              Built for fun and with love <span role="img" aria-label="love icon">💖</span> This app was developed and maintained
               by southojere
             </p>
             <p>
