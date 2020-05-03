@@ -1,14 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { gql } from "apollo-boost";
-import {
-  EyeOutlined,
-  CommentOutlined,
-  SettingOutlined,
-  LogoutOutlined,
-  LoginOutlined,
-  MessageOutlined
-} from "@ant-design/icons";
 import bestFriendIcon from "../../images/bestfriendsicon.png";
 import serviceIcon from "../../images/phonechat.png";
 import loginIcon from "../../images/callresident.png";
@@ -17,15 +9,6 @@ import aboutIcon from "../../images/islandinfo.png";
 
 import { PageWrapper, MenuTitle, MenuGrid, MenuItem } from "./styles";
 import { getUser, clearUser } from "../../helpers/local-storage";
-
-const USERS = gql`
-  query {
-    users {
-      id
-      username
-    }
-  }
-`;
 
 const menu = {};
 menu.AUTH_USER = [
