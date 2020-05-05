@@ -6,7 +6,7 @@ import {
   PlusCircleOutlined,
   SearchOutlined
 } from "@ant-design/icons";
-import { Select, Input, Slider } from "antd";
+import { Select, Slider, Col, Row, Radio } from "antd";
 
 import SessionCard from "./components/SessionCard";
 import SessionModal from "./components/CreateSessionModal";
@@ -20,7 +20,8 @@ import {
   CustomSelect,
   FilterContainer,
   LoaderWrapper,
-  EmptyComponent
+  EmptyComponent,
+  RadioContainer
 } from "./styles";
 import config from "../../config";
 import { getUser } from "../../helpers/local-storage";
@@ -28,7 +29,8 @@ import Loader from "../../components/Loader";
 import {
   SESSION_FILTERS,
   DEFAULT_SEARCH_RADIUS,
-  MAX_SEARCH_DISTANCE
+  MAX_SEARCH_DISTANCE,
+  VISITORS
 } from "../../constants";
 
 const SESSIONS_QUERY = gql`
@@ -65,7 +67,8 @@ const IslandsNearMe = ({ client }) => {
     },
     keyword: "",
     listType: SESSION_FILTERS.ALL.VALUE,
-    searchRadius: DEFAULT_SEARCH_RADIUS
+    searchRadius: DEFAULT_SEARCH_RADIUS,
+    visitor: null
   });
 
   const [pageState, setPageState] = React.useReducer(reducer, {
@@ -93,7 +96,8 @@ const IslandsNearMe = ({ client }) => {
             searchType: searchFields.listType,
             nearMeRadius: searchFields.searchRadius,
             latitude: searchFields.currentLocation.latitude,
-            longitude: searchFields.currentLocation.longitude
+            longitude: searchFields.currentLocation.longitude,
+            visitor: searchFields.visitor,
           }
         },
         fetchPolicy: "network-only"
@@ -239,20 +243,7 @@ const IslandsNearMe = ({ client }) => {
           </Select.Option>
           <Select.Option value={SESSION_FILTERS.ALL.VALUE}>ALL</Select.Option>
         </CustomSelect>
-        {searchFields.listType !== SESSION_FILTERS.NEARME.VALUE && (
-          <div>
-            <Input
-              placeholder="Search username or dodocode"
-              className="secondary-color"
-              onChange={({ target: { value } }) => {
-                setSearchState({ keyword: value });
-              }}
-            />
-          </div>
-        )}
-      </FilterContainer>
-      <br />
-      {searchFields.listType === SESSION_FILTERS.NEARME.VALUE && (
+              {searchFields.listType === SESSION_FILTERS.NEARME.VALUE && (
         <div>
           <p>Select your distance: ({searchFields.searchRadius} km)</p>
           <Slider
@@ -264,7 +255,60 @@ const IslandsNearMe = ({ client }) => {
           />
         </div>
       )}
+        {/* {searchFields.listType !== SESSION_FILTERS.NEARME.VALUE && (
+          <div>
+            <Input
+              placeholder="Search username or dodocode"
+              className="secondary-color"
+              onChange={({ target: { value } }) => {
+                setSearchState({ keyword: value });
+              }}
+            />
+          </div>
+        )} */}
+      </FilterContainer>
       <br />
+      <RadioContainer>
+        <Radio.Group
+          onChange={({ target: { value } }) => {
+            setSearchState({
+              visitor: value
+            });
+          }}
+          value={searchFields.visitor}
+        >
+          <Row>
+            <Col md={4} sm={8} xs={12}>
+              <Radio value={VISITORS.CELESTE.VALUE}>
+                {VISITORS.CELESTE.TEXT}
+              </Radio>
+            </Col>
+            <Col md={4} sm={8} xs={12}>
+              <Radio value={VISITORS.SAHARAH.VALUE}>
+                {VISITORS.SAHARAH.TEXT}
+              </Radio>
+            </Col>
+            <Col md={4} sm={8} xs={12}>
+              <Radio value={VISITORS.KICKS.VALUE}>{VISITORS.KICKS.TEXT}</Radio>
+            </Col>
+            <Col md={4} sm={8} xs={12}>
+              <Radio value={VISITORS.FLICK.VALUE}>{VISITORS.FLICK.TEXT}</Radio>
+            </Col>
+            <Col md={4} sm={8} xs={12}>
+              <Radio value={VISITORS.CJ.VALUE}>{VISITORS.CJ.TEXT}</Radio>
+            </Col>
+            <Col md={4} sm={8} xs={12}>
+              <Radio value={VISITORS.LEIF.VALUE}>{VISITORS.LEIF.TEXT}</Radio>
+            </Col>
+            <Col md={4} sm={8} xs={12}>
+              <Radio value={VISITORS.REDD.VALUE}>{VISITORS.REDD.TEXT}</Radio>
+            </Col>
+          </Row>
+        </Radio.Group>
+      </RadioContainer>
+      <br />
+
+
       <RenderContentBody />
       <SessionModal
         opened={displaySessionModel}

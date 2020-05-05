@@ -1,5 +1,5 @@
 import React from "react";
-import { PageWrapper } from "./style";
+import { PageWrapper, Disclaimer } from "./style";
 import Collapse from "../../components/Collapse";
 const About = () => {
   return (
@@ -15,6 +15,10 @@ const About = () => {
             <p>
               Images on this app was gathered from this <u>spread sheet</u>
             </p>
+            <br/>
+            <Disclaimer>All images used in the app belong to Nintendo</Disclaimer>
+            <br/>
+            <br/>
           </div>
         }
       />

@@ -70,6 +70,7 @@ const CustomSelect = styled(Select)`
 const FilterContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   > div {
     margin-right: 1rem;
   }
@@ -81,8 +82,14 @@ const LoaderWrapper = styled.div`
   bottom: 2rem;
 `;
 
-const EmptyComponent = styled(Empty)`
-    
+const EmptyComponent = styled(Empty)``;
+
+const RadioContainer = styled.div`
+  .ant-radio-group {
+    padding: 1rem;
+    border-radius: 15px;
+    background: ${({ theme }) => theme.colors.secondary.default};
+  }
 `;
 
 export {
@@ -95,5 +102,6 @@ export {
   CustomSelect,
   FilterContainer,
   LoaderWrapper,
-  EmptyComponent
+  EmptyComponent,
+  RadioContainer
 };

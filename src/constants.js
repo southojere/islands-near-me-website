@@ -14,7 +14,7 @@ const MAX_SEARCH_DISTANCE = 200; // 200km
 
 const VISITORS = {
   CELESTE: {
-    VALUE: 0,
+    VALUE: 1,
     TEXT: "Celeste"
   },
   SAHARAH: {

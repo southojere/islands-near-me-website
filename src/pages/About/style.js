@@ -10,5 +10,8 @@ const PageWrapper = styled.div`
   background-position: 0 0, calc(10 * 2px) calc(10 * 2px);
 `;
 
+const Disclaimer = styled.span`
+  color: ${({ theme }) => theme.colors.gray.dark};
+`;
 
-export { PageWrapper };
+export { PageWrapper, Disclaimer };
