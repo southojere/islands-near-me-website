@@ -4,8 +4,18 @@ import { gql } from "apollo-boost";
 import { Tooltip } from "antd";
 import { get } from "lodash";
 
-import { CardContainer, CloseIcon } from "./styles";
+import { CardContainer, CloseIcon, VisitorContainer } from "./styles";
 import { getUser } from "../../../../helpers/local-storage";
+import { formatDate } from "../../../../helper";
+
+//images
+import celesteIcon from "../../../../images/celesteIcon.png";
+import kicksIcon from "../../../../images/kicksIcon.png";
+import liefIcon from "../../../../images/liefIcon.png";
+import saharahIcon from "../../../../images/saharahIcon.png";
+import flickIcon from "../../../../images/flickIcon.png";
+import cjIcon from "../../../../images/cjIcon.png";
+import reddIcon from "../../../../images/reddIcon.png";
 
 const DELETE_SESSION = gql`
   mutation($id: Int!) {
@@ -13,7 +23,24 @@ const DELETE_SESSION = gql`
   }
 `;
 
-const SessionCard = ({ id, note, dodoCode, refetch, owner }) => {
+const SessionCard = ({
+  id,
+  note,
+  dodoCode,
+  refetch,
+  owner,
+  createdAt,
+  ...visitors
+}) => {
+  const {
+    hasCeleste,
+    hasSaharah,
+    hasKicks,
+    hasCJ,
+    hasRedd,
+    hasFlick,
+    hasLeif
+  } = visitors;
   const currentUser = getUser();
   const [deleteSession] = useMutation(DELETE_SESSION);
 
@@ -58,6 +85,26 @@ const SessionCard = ({ id, note, dodoCode, refetch, owner }) => {
           <b>Note:</b> {note}
         </div>
       )}
+      <span>
+        created:{" "}
+        {formatDate(createdAt, {
+          format: "h:mma"
+        })}
+      </span>
+      <VisitorContainer>
+        {hasCeleste && (
+          <img src={celesteIcon} alt="Celeste Icon" title="Celeste"></img>
+        )}
+        {hasSaharah && (
+          <img src={saharahIcon} alt="Saharah Icon" title="Saharah"></img>
+        )}
+        {hasKicks && <img src={kicksIcon} alt="Kicks Icon" title="Kicks"></img>}
+        {console.log(hasLeif)}
+        {hasLeif && <img src={liefIcon} alt="lief icon" title="Lief"></img>}
+        {hasFlick && <img src={flickIcon} alt="cj icon" title="Flick"></img>}
+        {hasCJ && <img src={cjIcon} alt="cj icon" title={"CJ"}></img>}
+        {hasRedd && <img src={reddIcon} alt="Redd icon" title={"CJ"}></img>}
+      </VisitorContainer>
     </CardContainer>
   );
 };

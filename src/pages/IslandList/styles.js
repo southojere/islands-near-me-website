@@ -4,7 +4,7 @@ import { Pagination, Select, Empty } from "antd";
 const PageWrapper = styled.div`
   position: relative;
   background: #f79d7b;
-  min-height: 300px;
+  min-height: 350px;
   border-radius: 35px;
   padding: 2rem;
 `;

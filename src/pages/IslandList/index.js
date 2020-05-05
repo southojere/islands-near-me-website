@@ -49,6 +49,14 @@ const SESSIONS_QUERY = gql`
           username
           email
         }
+        hasCeleste
+        hasSaharah
+        hasKicks
+        hasCJ
+        hasRedd
+        hasFlick
+        hasLeif
+        createdAt
       }
     }
   }
@@ -97,7 +105,7 @@ const IslandsNearMe = ({ client }) => {
             nearMeRadius: searchFields.searchRadius,
             latitude: searchFields.currentLocation.latitude,
             longitude: searchFields.currentLocation.longitude,
-            visitor: searchFields.visitor,
+            visitor: searchFields.visitor
           }
         },
         fetchPolicy: "network-only"
@@ -183,7 +191,7 @@ const IslandsNearMe = ({ client }) => {
       <>
         <ListWrapper>
           {sessions.map(session => {
-            const { id, note, dodoCode, hostId, host } = session;
+            const { id, note, dodoCode, hostId, host, createdAt } = session;
             return (
               <SessionCard
                 key={`session-card-${id}`}
@@ -193,6 +201,8 @@ const IslandsNearMe = ({ client }) => {
                 host={hostId}
                 refetch={refetch}
                 owner={host}
+                createdAt={createdAt}
+                {...session}
               />
             );
           })}
@@ -243,18 +253,18 @@ const IslandsNearMe = ({ client }) => {
           </Select.Option>
           <Select.Option value={SESSION_FILTERS.ALL.VALUE}>ALL</Select.Option>
         </CustomSelect>
-              {searchFields.listType === SESSION_FILTERS.NEARME.VALUE && (
-        <div>
-          <p>Select your distance: ({searchFields.searchRadius} km)</p>
-          <Slider
-            tipFormatter={value => `${value} km`}
-            max={MAX_SEARCH_DISTANCE}
-            onChange={val => setSearchState({ searchRadius: val })}
-            style={{ width: "200px" }}
-            defaultValue={searchFields.searchRadius}
-          />
-        </div>
-      )}
+        {searchFields.listType === SESSION_FILTERS.NEARME.VALUE && (
+          <div>
+            <p>Select your distance: ({searchFields.searchRadius} km)</p>
+            <Slider
+              tipFormatter={value => `${value} km`}
+              max={MAX_SEARCH_DISTANCE}
+              onChange={val => setSearchState({ searchRadius: val })}
+              style={{ width: "100%" }}
+              defaultValue={searchFields.searchRadius}
+            />
+          </div>
+        )}
         {/* {searchFields.listType !== SESSION_FILTERS.NEARME.VALUE && (
           <div>
             <Input
@@ -307,7 +317,6 @@ const IslandsNearMe = ({ client }) => {
         </Radio.Group>
       </RadioContainer>
       <br />
-
 
       <RenderContentBody />
       <SessionModal

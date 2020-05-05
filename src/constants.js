@@ -10,7 +10,7 @@ const SESSION_FILTERS = {
 };
 
 const DEFAULT_SEARCH_RADIUS = 50; //50km
-const MAX_SEARCH_DISTANCE = 200; // 200km
+const MAX_SEARCH_DISTANCE = 100; // 200km
 
 const VISITORS = {
   CELESTE: {

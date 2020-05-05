@@ -34,4 +34,8 @@ const CloseIcon = styled(CloseCircleTwoTone)`
   }
 `;
 
-export { CardContainer, CloseIcon };
+const VisitorContainer = styled.div`
+    margin-bottom:.5rem;
+`
+
+export { CardContainer, CloseIcon,VisitorContainer };
