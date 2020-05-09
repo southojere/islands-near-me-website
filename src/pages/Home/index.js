@@ -59,7 +59,7 @@ menu.UNAUTH_USER = [
   },
   {
     icon: <img src={serviceIcon} alt="feature requests icon"></img>,
-    label: "Feature requests",
+    label: "Requests",
     link: "/requests",
     disabled: true,
     backgroundColor: "#d2de43"

@@ -121,9 +121,10 @@ const IslandsNearMe = ({ client }) => {
           });
         }
       })
-      .catch(() => {
+      .catch(error => {
         setPageState({
-          loading: false
+          loading: false,
+          error: error.toString()
         });
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -211,7 +212,12 @@ const IslandsNearMe = ({ client }) => {
             <EmptyComponent description="No Sessions found" />
           )}
 
-          {error && <p>{`>.< ${error.toString()}`}</p>}
+          {error && (
+            <>
+              <br />
+              <p>{`>.< ${error}`}</p>
+            </>
+          )}
         </ListWrapper>
         <br />
         {searchFields.listType !== SESSION_FILTERS.NEARME.VALUE &&
@@ -324,8 +330,8 @@ const IslandsNearMe = ({ client }) => {
         opened={displaySessionModel}
         onCancel={() => setModal(false)}
         onComplete={() => {
-          refetch();
           setModal(false);
+          window.location.reload();
         }}
       />
     </PageWrapper>
