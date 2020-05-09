@@ -62,7 +62,7 @@ const Login = () => {
             if (login && login.user.id) {
               setUser(login.user);
               setAccessToken(login.accessToken);
-              history.push("/");
+              window.location.href = "/";
             }
           }
           setLoading(false);
@@ -79,7 +79,7 @@ const Login = () => {
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: "Please input your Password!" }]}
+          rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
@@ -95,7 +95,15 @@ const Login = () => {
         </Form.Item>
         <span>
           {" "}
-          Or <Link to={"/signup"}>Register here</Link>
+          Or{" "}
+          <Link
+            to={"/signup"}
+            style={{
+              color: "#5772f3"
+            }}
+          >
+            Register here
+          </Link>
         </span>
       </FormWrapper>
     </PageWrapper>

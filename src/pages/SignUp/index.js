@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import { Link } from "react-router-dom";
@@ -19,7 +20,7 @@ const SIGNUP = gql`
 
 const Signup = () => {
   const [signUpMutation, { loading }] = useMutation(SIGNUP);
-  //   const [loading, setLoading] = React.useState(false);
+  const history = useHistory();
   const [notification, setNotification] = React.useState({
     message: "",
     type: "success"
@@ -41,7 +42,7 @@ const Signup = () => {
         className="login-form"
         onFinish={async values => {
           //   setLoading(true);
-          const res = await signUpMutation({
+          await signUpMutation({
             variables: {
               input: {
                 email: values.email,
@@ -55,15 +56,18 @@ const Signup = () => {
               type: "error"
             });
           });
+          setTimeout(() => {
+            history.push("/login");
+          }, 3000);
           setNotification({
-            message: "Done! Please check your emails complete your signup.",
+            message: "Done! You will shortly be navigated to the login page.",
             type: "success"
           });
         }}
       >
         <Form.Item
           name="username"
-          rules={[{ required: true, message: "Please input your Username~" }]}
+          rules={[{ required: true, message: "Please input your username~" }]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -72,7 +76,7 @@ const Signup = () => {
         </Form.Item>
         <Form.Item
           name="email"
-          rules={[{ required: true, message: "Please input your Email~" }]}
+          rules={[{ required: true, message: "Please input your email~" }]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -81,7 +85,7 @@ const Signup = () => {
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: "Please input your Password~" }]}
+          rules={[{ required: true, message: "Please input your password~" }]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
@@ -97,7 +101,10 @@ const Signup = () => {
         </Form.Item>
         <span>
           {" "}
-          Or <Link to={"/login"}>login now!</Link>
+          Or{" "}
+          <Link to={"/login"} style={{ color: "#67bc65" }}>
+            login now!
+          </Link>
         </span>
       </FormWrapper>
     </PageWrapper>
