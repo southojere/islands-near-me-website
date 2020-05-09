@@ -17,6 +17,7 @@ import {
 } from "./styles";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { VISITORS } from "../../../../constants";
+import { BrowserView } from "react-device-detect";
 
 const CREATE_SESSION = gql`
   mutation($input: SessionInput!) {
@@ -147,6 +148,12 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
         <Disclaimer>
           To be able to find people near you we first need your location
         </Disclaimer>
+        <BrowserView>
+          <Disclaimer>
+            Your location may not be accurate if you are using a computer. For
+            best results us the phone to create your session.
+          </Disclaimer>
+        </BrowserView>
       </>
     );
   };

@@ -1,14 +1,17 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { gql } from "apollo-boost";
+
+// images
 import bestFriendIcon from "../../images/bestfriendsicon.png";
 import serviceIcon from "../../images/phonechat.png";
 import loginIcon from "../../images/callresident.png";
 import logoutIcon from "../../images/nookmiles.png";
 import aboutIcon from "../../images/islandinfo.png";
 
-import { PageWrapper, MenuTitle, MenuGrid, MenuItem } from "./styles";
+import { PageWrapper, MenuTitle, MenuGrid, MenuItem, Badge, MenuItemWrapper } from "./styles";
 import { getUser, clearUser } from "../../helpers/local-storage";
+import useWindowSize from "../../hooks/useWindow";
+import { TABLET_THRESHOLD_WIDTH } from "../../constants";
 
 const menu = {};
 menu.AUTH_USER = [
@@ -20,7 +23,7 @@ menu.AUTH_USER = [
   },
   {
     icon: <img src={serviceIcon} alt="Feature requests icon"></img>,
-    label: "Feature requests",
+    label: "Requests",
     link: "/requests",
     backgroundColor: "#d2de43"
   },
@@ -72,6 +75,7 @@ menu.UNAUTH_USER = [
 const Home = () => {
   const history = useHistory();
   const [user, setUser] = React.useState();
+  const [width] = useWindowSize();
   const [inFocusMenuItem, setMenuItem] = React.useState("Welcome!");
 
   React.useState(() => {
@@ -96,22 +100,26 @@ const Home = () => {
       <MenuGrid>
         {usersMenu.map((item, k) => {
           return (
-            <MenuItem
-              key={`menu-item-${k}`}
-              disabled={item.disabled}
-              backgroundColor={item.backgroundColor}
-              onMouseEnter={() => handleMenuItemHover(item)}
-              onClick={() => {
-                if (item.disabled) return;
-                if (item.action) {
-                  item.action();
-                  return;
-                }
-                handleMenuItemClick(item);
-              }}
-            >
-              {item.icon}
-            </MenuItem>
+            <MenuItemWrapper>
+              <MenuItem
+                key={`menu-item-${k}`}
+                disabled={item.disabled}
+                backgroundColor={item.backgroundColor}
+                onMouseEnter={() => handleMenuItemHover(item)}
+                onClick={() => {
+                  if (item.disabled) return;
+                  if (item.action) {
+                    item.action();
+                    return;
+                  }
+                  handleMenuItemClick(item);
+                }}
+              >
+                {item.icon}
+              </MenuItem>
+
+              {width < TABLET_THRESHOLD_WIDTH && <Badge>{item.label}</Badge>}
+            </MenuItemWrapper>
           );
         })}
       </MenuGrid>

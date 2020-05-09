@@ -54,4 +54,15 @@ const MenuGrid = styled.div`
   grid-gap: 1rem;
 `;
 
-export { PageWrapper, MenuTitle, MenuGrid, MenuItem };
+const Badge = styled.div`
+  padding: 5px;
+  border-radius: 5px;
+  background: wheat;
+  width: 90px;
+  margin-top: 7px;
+  text-align: center;
+`;
+
+const MenuItemWrapper = styled.div`
+`;
+export { PageWrapper, MenuTitle, MenuGrid, MenuItem, Badge, MenuItemWrapper};
