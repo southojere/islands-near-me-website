@@ -151,7 +151,7 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
         <BrowserView>
           <Disclaimer>
             Your location may not be accurate if you are using a computer. For
-            best results us the phone to create your session.
+            best results use the phone to create your session.
           </Disclaimer>
         </BrowserView>
       </>

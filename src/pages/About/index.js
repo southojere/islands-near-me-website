@@ -9,16 +9,28 @@ const About = () => {
         body={
           <div>
             <p>
-              Built for fun and with love <span role="img" aria-label="love icon">💖</span> This app was developed and maintained
-              by southojere
+              Built for fun and with love{" "}
+              <span role="img" aria-label="love icon">
+                💖
+              </span>{" "}
+              This app was developed and maintained by southojere
             </p>
             <p>
-              Images on this app was gathered from this <u>spread sheet</u>
+              Images on this app was gathered from this{" "}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.google.com/spreadsheets/d/13d_LAJPlxMa_DubPTuirkIV4DERBMXbrWQsmSh8ReK4/edit?usp=sharing"
+                title="https://docs.google.com/spreadsheets/d/13d_LAJPlxMa_DubPTuirkIV4DERBMXbrWQsmSh8ReK4/edit?usp=sharing"
+              >
+                spread sheet
+              </a>
             </p>
-            <br/>
-            <Disclaimer>All images used in the app belong to Nintendo</Disclaimer>
-            <br/>
-            <br/>
+            <br />
+            <Disclaimer>
+              All images used in the app belong to Nintendo
+            </Disclaimer>
+            <br />
           </div>
         }
       />
@@ -58,7 +70,8 @@ const About = () => {
         body={
           <div>
             <p>
-              Feel free to contact me with any enquires at southon5555@gmail.com
+              Feel free to contact me with any enquires at{' '}
+              <u>islandsnearme@gmail.com</u>
             </p>
           </div>
         }

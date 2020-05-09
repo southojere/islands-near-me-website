@@ -8,7 +8,14 @@ import loginIcon from "../../images/callresident.png";
 import logoutIcon from "../../images/nookmiles.png";
 import aboutIcon from "../../images/islandinfo.png";
 
-import { PageWrapper, MenuTitle, MenuGrid, MenuItem, Badge, MenuItemWrapper } from "./styles";
+import {
+  PageWrapper,
+  MenuTitle,
+  MenuGrid,
+  MenuItem,
+  Badge,
+  MenuItemWrapper
+} from "./styles";
 import { getUser, clearUser } from "../../helpers/local-storage";
 import useWindowSize from "../../hooks/useWindow";
 import { TABLET_THRESHOLD_WIDTH } from "../../constants";
@@ -17,7 +24,7 @@ const menu = {};
 menu.AUTH_USER = [
   {
     icon: <img src={bestFriendIcon} alt="People icon"></img>,
-    label: "Islands Near Me",
+    label: "Islands",
     link: "/islandsnearme",
     backgroundColor: "radial-gradient(#eebd77,#ed8067 );"
   },
@@ -47,7 +54,7 @@ menu.AUTH_USER = [
 menu.UNAUTH_USER = [
   {
     icon: <img src={bestFriendIcon} alt="people icon"></img>,
-    label: "Islands Near Me",
+    label: "Islands",
     link: "/islandsnearme",
     backgroundColor: "radial-gradient(#eebd77,#ed8067 );"
   },
@@ -100,7 +107,7 @@ const Home = () => {
       <MenuGrid>
         {usersMenu.map((item, k) => {
           return (
-            <MenuItemWrapper>
+            <MenuItemWrapper key={`menu-wrapper-${k}`}>
               <MenuItem
                 key={`menu-item-${k}`}
                 disabled={item.disabled}

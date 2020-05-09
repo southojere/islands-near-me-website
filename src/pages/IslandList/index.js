@@ -241,7 +241,7 @@ const IslandsNearMe = ({ client }) => {
   return (
     <PageWrapper>
       <Header>
-        <h2 style={{ textAlign: "center" }}>Islands Near Me</h2>
+        <h2 style={{ textAlign: "center" }}>Islands</h2>
         <RenderActions />
       </Header>
       <FilterContainer>
