@@ -123,6 +123,9 @@ const Layout = props => {
     if (activeSession) {
       return (
         <SessionActionsWrapper>
+            <div className="left">
+                Current Session
+            </div>
           <SessionActions>
             {width < TABLET_THRESHOLD_WIDTH && (
               <span>

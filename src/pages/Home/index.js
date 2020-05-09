@@ -18,9 +18,10 @@ import {
   Badge,
   MenuItemWrapper
 } from "./styles";
-import { getUser, clearUser } from "../../helpers/local-storage";
+import { getUser } from "../../helpers/local-storage";
 import useWindowSize from "../../hooks/useWindow";
 import { TABLET_THRESHOLD_WIDTH } from "../../constants";
+import { signOut } from "../../helpers/auth";
 
 const menu = {};
 menu.AUTH_USER = [
@@ -74,7 +75,7 @@ menu.AUTH_USER = [
     label: "Logout",
     backgroundColor: "#8a9af7",
     action: () => {
-      clearUser();
+      signOut();
       window.location.reload();
     }
   }

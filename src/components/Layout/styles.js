@@ -17,12 +17,21 @@ const SessionActionsWrapper = styled.div`
   background-size: calc(20 * 1px) calc(20 * 1px);
   background-position: 0 0, calc(10 * 1px) calc(10 * 1px);
   border-radius: 5px;
+
+  .left {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
 `;
 
 const SessionActions = styled.div`
   > button {
     margin-left: 1rem;
   }
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 export { HomeIcon, SessionActions, SessionActionsWrapper };

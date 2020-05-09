@@ -21,7 +21,9 @@ import {
   FilterContainer,
   LoaderWrapper,
   EmptyComponent,
-  RadioContainer
+  RadioContainer,
+  TitleContainer,
+  Disclaimer
 } from "./styles";
 import config from "../../config";
 import { getUser } from "../../helpers/local-storage";
@@ -30,8 +32,10 @@ import {
   SESSION_FILTERS,
   DEFAULT_SEARCH_RADIUS,
   MAX_SEARCH_DISTANCE,
-  VISITORS
+  VISITORS,
+  TABLET_THRESHOLD_WIDTH
 } from "../../constants";
+import useWindowSize from "../../hooks/useWindow";
 
 const SESSIONS_QUERY = gql`
   query sessions($filter: SessionSearchInput!) {
@@ -66,6 +70,7 @@ const SESSIONS_QUERY = gql`
 const IslandsNearMe = ({ client }) => {
   const currentUser = getUser();
   const [refetchCount, setRefetchCount] = React.useState(0);
+  const [width] = useWindowSize();
   const [page, setPage] = React.useState(1);
 
   const reducer = (state, newState) => ({ ...state, ...newState });
@@ -241,7 +246,12 @@ const IslandsNearMe = ({ client }) => {
   return (
     <PageWrapper>
       <Header>
-        <h2 style={{ textAlign: "center" }}>Islands</h2>
+        <TitleContainer>
+          <h2 style={{ textAlign: "center" }}>Islands</h2>
+          {width > TABLET_THRESHOLD_WIDTH &&  <Disclaimer>
+            Sessions have a life span of 2 hours before it is automatically removed.
+          </Disclaimer>}
+        </TitleContainer>
         <RenderActions />
       </Header>
       <FilterContainer>

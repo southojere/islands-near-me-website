@@ -30,6 +30,10 @@ const getAccessToken = () => {
   return getItem(ACCESS_TOKEN);
 };
 
+const clearAccessToken = () => {
+    removeItem(ACCESS_TOKEN);
+}
+
 export {
   getItem,
   getUser,
@@ -38,5 +42,6 @@ export {
   removeItem,
   clearUser,
   setAccessToken,
-  getAccessToken
+  getAccessToken,
+  clearAccessToken
 };

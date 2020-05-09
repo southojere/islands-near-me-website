@@ -92,6 +92,21 @@ const RadioContainer = styled.div`
   }
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  h2 {
+    margin: 0;
+  }
+  margin-bottom:1rem;
+`;
+
+const Disclaimer = styled.div`
+  font-size: 12px;
+  color: #684234;
+`
+
 export {
   Header,
   PageWrapper,
@@ -103,5 +118,7 @@ export {
   FilterContainer,
   LoaderWrapper,
   EmptyComponent,
-  RadioContainer
+  RadioContainer,
+  TitleContainer,
+  Disclaimer
 };

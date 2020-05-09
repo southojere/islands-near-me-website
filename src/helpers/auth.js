@@ -1,11 +1,8 @@
-// import { findUserByCognitoID } from "./graphql/user";
-// import { setUser } from "./local-storage";
-
-const log = msg => console.log(`[Auth Service] ${msg}`);
-
+import { clearUser, clearAccessToken } from "./local-storage";
 
 const signOut = () => {
-  //   Auth.signOut().catch(err => log(err));
+  clearUser();
+  clearAccessToken();
 };
 
 

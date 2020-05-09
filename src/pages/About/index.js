@@ -26,15 +26,12 @@ const About = () => {
                 spread sheet
               </a>
             </p>
-            <br />
             <p>
                 Want to add a new app/feature? Send us an email or submit a request on the request page.
             </p>
-            <br />
             <Disclaimer>
               All images used in the app belong to Nintendo
             </Disclaimer>
-            <br />
           </div>
         }
       />
