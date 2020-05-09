@@ -7,6 +7,8 @@ import serviceIcon from "../../images/phonechat.png";
 import loginIcon from "../../images/callresident.png";
 import logoutIcon from "../../images/nookmiles.png";
 import aboutIcon from "../../images/islandinfo.png";
+import customDesignsIcon from "../../images/customdesigns.png";
+import passportIcon from "../../images/passportIcon.png";
 
 import {
   PageWrapper,
@@ -40,6 +42,33 @@ menu.AUTH_USER = [
     link: "/about",
     backgroundColor: "#907b4f"
   },
+
+  {
+    icon: (
+      <img
+        title="Under Construction"
+        src={customDesignsIcon}
+        alt="Custom Designs Icon"
+      ></img>
+    ),
+    label: "Designs",
+    link: "/designs",
+    disabled: true,
+    backgroundColor: "#f8a7b4"
+  },
+  {
+    icon: (
+      <img
+        title="Under Construction"
+        src={passportIcon}
+        alt="Passport/Profile Icon"
+      ></img>
+    ),
+    label: "Passport",
+    link: "/passport",
+    disabled: true,
+    backgroundColor: "#88c689"
+  },
   {
     icon: <img src={logoutIcon} alt="Logout icon"></img>,
     label: "Logout",
@@ -70,6 +99,26 @@ menu.UNAUTH_USER = [
     link: "/requests",
     disabled: true,
     backgroundColor: "#d2de43"
+  },
+  {
+    icon: <img src={customDesignsIcon} alt="Custom Designs icon"></img>,
+    label: "Designs",
+    link: "/designs",
+    disabled: true,
+    backgroundColor: "#faa6b5"
+  },
+  {
+    icon: (
+      <img
+        title="Under Construction"
+        src={passportIcon}
+        alt="Passport/Profile Icon"
+      ></img>
+    ),
+    label: "Passport",
+    link: "/passport",
+    disabled: true,
+    backgroundColor: "#88c689"
   },
   {
     icon: <img src={loginIcon} alt="login icon"></img>,
