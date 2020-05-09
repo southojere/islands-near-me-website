@@ -11,6 +11,7 @@ const CardContainer = styled.div`
   border-radius: 30px;
   text-align: center;
   margin-bottom: 1rem;
+  padding: 1rem;
   &:hover {
     background: repeating-linear-gradient(
       -45deg,
@@ -28,14 +29,19 @@ const CloseIcon = styled(CloseCircleTwoTone)`
   right: -3px;
   font-size: 20px;
   cursor: pointer;
-  transition: all .5s;
+  transition: all 0.5s;
   &:hover {
-    transform: scale(1.2)
+    transform: scale(1.2);
   }
 `;
 
-const VisitorContainer = styled.div`
-    margin-bottom:.5rem;
-`
+const VisitorContainer = styled.div``;
 
-export { CardContainer, CloseIcon,VisitorContainer };
+const Badge = styled.span`
+  border-radius: 5px;
+  padding:3px;
+  background:#FF3643;
+  color: white;
+`;
+
+export { CardContainer, CloseIcon, VisitorContainer, Badge};

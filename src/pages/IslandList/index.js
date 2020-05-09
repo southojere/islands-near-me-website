@@ -42,6 +42,7 @@ const SESSIONS_QUERY = gql`
         note
         hostId
         dodoCode
+        isFull
         latitude
         longitude
         host {

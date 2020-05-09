@@ -4,7 +4,7 @@ import { gql } from "apollo-boost";
 import { Tooltip } from "antd";
 import { get } from "lodash";
 
-import { CardContainer, CloseIcon, VisitorContainer } from "./styles";
+import { CardContainer, CloseIcon, VisitorContainer, Badge } from "./styles";
 import { getUser } from "../../../../helpers/local-storage";
 import { formatDate } from "../../../../helper";
 
@@ -30,6 +30,7 @@ const SessionCard = ({
   refetch,
   owner,
   createdAt,
+  isFull,
   ...visitors
 }) => {
   const {
@@ -77,7 +78,7 @@ const SessionCard = ({
       )}
       <div>{owner.username}</div>
       <div>
-        <b>DODO CODE:</b> {dodoCode}
+        <b>DODO CODE:</b> {!isFull ? dodoCode : <Badge>FULL</Badge>}
       </div>
 
       {note && (
@@ -86,7 +87,7 @@ const SessionCard = ({
         </div>
       )}
       <span>
-        created:{" "}
+        <b>Created:{" "}</b>
         {formatDate(createdAt, {
           format: "h:mma"
         })}

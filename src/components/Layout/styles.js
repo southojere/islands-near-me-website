@@ -8,4 +8,10 @@ const HomeIcon = styled(HomeOutlined)`
   }
 `;
 
-export { HomeIcon };
+const SessionActions = styled.div`
+  > button {
+    margin-left: 1rem;
+  }
+`;
+
+export { HomeIcon, SessionActions };
