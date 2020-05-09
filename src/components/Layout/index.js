@@ -10,10 +10,12 @@ import {
   DeleteOutlined,
   ControlOutlined
 } from "@ant-design/icons";
-
-import { HomeIcon, SessionActions } from "./styles";
 import { Button, Tooltip } from "antd";
-import Loader from "../Loader";
+
+import { HomeIcon, SessionActions, SessionActionsWrapper } from "./styles";
+
+import useWindowSize from "../../hooks/useWindow";
+import { TABLET_THRESHOLD_WIDTH } from "../../constants";
 
 const Header = styled.div`
   display: flex;
@@ -73,6 +75,7 @@ const MARK_SESSION_FULL = gql`
 
 const Layout = props => {
   const history = useHistory();
+  const [width] = useWindowSize();
   const date = new Date();
 
   const [deleteSession, { loading }] = useMutation(DELETE_SESSION);
@@ -114,48 +117,55 @@ const Layout = props => {
 
   const RenderSessionActions = () => {
     if (loadingUser) {
-      return <Loader></Loader>;
+      return null;
     }
 
     if (activeSession) {
       return (
-        <SessionActions>
-          <Tooltip
-            placement="left"
-            title={activeSession.isFull ? "Show dodo code" : "Hide dodo code"}
-          >
-            <Button
-              onClick={handleMarkSessionFull}
-              type="primary"
-              shape="circle"
-              icon={<ControlOutlined spin={markFullLoading} />}
-            />
-          </Tooltip>
+        <SessionActionsWrapper>
+          <SessionActions>
+            {width < TABLET_THRESHOLD_WIDTH && (
+              <span>
+                {activeSession.isFull ? "Show DODO Code" : "Mark Session Full"}
+              </span>
+            )}
+            <Tooltip
+              placement="left"
+              title={activeSession.isFull ? "Show dodo code" : "Hide dodo code"}
+            >
+              <Button
+                onClick={handleMarkSessionFull}
+                type="primary"
+                shape="circle"
+                icon={<ControlOutlined spin={markFullLoading} />}
+              />
+            </Tooltip>
 
-          <Tooltip
-            placement="left"
-            title={`End Session ${activeSession.dodoCode}`}
-          >
-            <Button
-              danger
-              onClick={handleDelete}
-              loading={loading}
-              type="primary"
-              shape="circle"
-              icon={<DeleteOutlined />}
-            />
-          </Tooltip>
-        </SessionActions>
+            <Tooltip
+              placement="left"
+              title={`End Session ${activeSession.dodoCode}`}
+            >
+              <Button
+                danger
+                onClick={handleDelete}
+                loading={loading}
+                type="primary"
+                shape="circle"
+                icon={<DeleteOutlined />}
+              />
+            </Tooltip>
+          </SessionActions>
+        </SessionActionsWrapper>
       );
     }
-    return <div></div>;
+    return null;
   };
 
   return (
     <div>
       <Header>
         <span>
-          <HomeIcon onClick={() => history.push("/")} /> <WifiOutlined />
+          <HomeIcon onClick={() => history.push("/")} />
         </span>
         <span>
           {date.toLocaleTimeString("en-AU", {
@@ -164,8 +174,9 @@ const Layout = props => {
             minute: "numeric"
           })}
         </span>
-        <RenderSessionActions />
+        <WifiOutlined />
       </Header>
+      <RenderSessionActions />
       <Margin>{props.children}</Margin>
     </div>
   );
