@@ -133,7 +133,7 @@ const Home = () => {
   const history = useHistory();
   const [user, setUser] = React.useState();
   const [width] = useWindowSize();
-  const [inFocusMenuItem, setMenuItem] = React.useState("Welcome!!");
+  const [inFocusMenuItem, setMenuItem] = React.useState("Welcome!");
 
   React.useState(() => {
     const user = getUser();

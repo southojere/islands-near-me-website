@@ -58,6 +58,10 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
+      registration.onUpdate = () => {
+        const newSw = registration.waiting;
+        newSw.skipWaiting();
+      };
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -127,13 +131,6 @@ function checkValidServiceWorker(swUrl, config) {
       );
     });
 }
-// eslint-disable-next-line
-self.addEventListener("message", event => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    // eslint-disable-next-line
-    self.skipWaiting();
-  }
-});
 
 export function unregister() {
   if ("serviceWorker" in navigator) {
