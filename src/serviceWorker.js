@@ -59,8 +59,10 @@ function registerValidSW(swUrl, config) {
     .register(swUrl)
     .then(registration => {
       registration.onUpdate = () => {
-        const newSw = registration.waiting;
-        newSw.skipWaiting();
+        const waitingWorker = registration.waiting;
+
+        waitingWorker.postMessage({ type: "SKIP_WAITING" });
+        window.location.reload(true);
       };
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
