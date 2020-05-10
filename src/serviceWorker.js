@@ -58,10 +58,6 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
-      registration.onSuccess = () => {
-        console.log(`Successful have stored website files for offline use!`);
-      };
-      registration.onUpdate = () => {};
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -131,6 +127,13 @@ function checkValidServiceWorker(swUrl, config) {
       );
     });
 }
+// eslint-disable-next-line
+self.addEventListener("message", event => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    // eslint-disable-next-line
+    self.skipWaiting();
+  }
+});
 
 export function unregister() {
   if ("serviceWorker" in navigator) {
@@ -141,10 +144,5 @@ export function unregister() {
       .catch(error => {
         console.error(error.message);
       });
-
-    navigator.serviceWorker.skipWaiting().then(() => {
-      console.log(`skipWaiting~`);
-      window.location.reload();
-    });
   }
 }
