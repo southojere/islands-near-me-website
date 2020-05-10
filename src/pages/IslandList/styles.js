@@ -52,6 +52,7 @@ const ActionContainer = styled.div`
 
 const CustomSelect = styled(Select)`
   .ant-select-selector {
+    border-radius: 8px !important;
     border: none;
     outline: none;
     &:hover {
@@ -99,13 +100,13 @@ const TitleContainer = styled.div`
   h2 {
     margin: 0;
   }
-  margin-bottom:1rem;
+  margin-bottom: 1rem;
 `;
 
 const Disclaimer = styled.div`
   font-size: 12px;
   color: #684234;
-`
+`;
 
 export {
   Header,
