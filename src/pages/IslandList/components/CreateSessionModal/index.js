@@ -146,7 +146,7 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
           </LocationLabel>
         </LocationWrapper>
         <Disclaimer>
-          To be able to find people near you we first need your location
+          To be able to find people near you we first need your location.
         </Disclaimer>
         <BrowserView>
           <Disclaimer>
