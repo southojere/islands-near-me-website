@@ -9,7 +9,7 @@ const About = () => {
         body={
           <div>
             <p>
-              Built for fun and with love{" "}
+              Built with love and for fun{" "}
               <span role="img" aria-label="love icon">
                 💖
               </span>{" "}
