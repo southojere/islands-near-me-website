@@ -112,16 +112,6 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
                 </Checkbox>
               </Col>
               <Col span={8}>
-                <Checkbox value={VISITORS.FLICK.VALUE}>
-                  {VISITORS.FLICK.TEXT}
-                </Checkbox>
-              </Col>
-              <Col span={8}>
-                <Checkbox value={VISITORS.CJ.VALUE}>
-                  {VISITORS.CJ.TEXT}
-                </Checkbox>
-              </Col>
-              <Col span={8}>
                 <Checkbox value={VISITORS.LEIF.VALUE}>
                   {VISITORS.LEIF.TEXT}
                 </Checkbox>
@@ -193,8 +183,6 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
               longitude: `${values.coords.longitude}`,
               hasRedd: values.visitors.indexOf(VISITORS.REDD.VALUE) !== -1,
               hasLeif: values.visitors.indexOf(VISITORS.LEIF.VALUE) !== -1,
-              hasCJ: values.visitors.indexOf(VISITORS.CJ.VALUE) !== -1,
-              hasFlick: values.visitors.indexOf(VISITORS.FLICK.VALUE) !== -1,
               hasKicks: values.visitors.indexOf(VISITORS.KICKS.VALUE) !== -1,
               hasSaharah:
                 values.visitors.indexOf(VISITORS.SAHARAH.VALUE) !== -1,

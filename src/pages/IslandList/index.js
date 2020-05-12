@@ -57,9 +57,7 @@ const SESSIONS_QUERY = gql`
         hasCeleste
         hasSaharah
         hasKicks
-        hasCJ
         hasRedd
-        hasFlick
         hasLeif
         createdAt
       }
@@ -248,9 +246,12 @@ const IslandsNearMe = ({ client }) => {
       <Header>
         <TitleContainer>
           <h2 style={{ textAlign: "center" }}>Islands</h2>
-          {width > TABLET_THRESHOLD_WIDTH &&  <Disclaimer>
-            Sessions have a life span of 2 hours before it is automatically removed.
-          </Disclaimer>}
+          {width > TABLET_THRESHOLD_WIDTH && (
+            <Disclaimer>
+              Sessions have a life span of 2 hours before it is automatically
+              removed.
+            </Disclaimer>
+          )}
         </TitleContainer>
         <RenderActions />
       </Header>
@@ -305,29 +306,23 @@ const IslandsNearMe = ({ client }) => {
           value={searchFields.visitor}
         >
           <Row>
-            <Col md={4} sm={8} xs={12}>
+            <Col sm={8} xs={12}>
               <Radio value={VISITORS.CELESTE.VALUE}>
                 {VISITORS.CELESTE.TEXT}
               </Radio>
             </Col>
-            <Col md={4} sm={8} xs={12}>
+            <Col sm={8} xs={12}>
               <Radio value={VISITORS.SAHARAH.VALUE}>
                 {VISITORS.SAHARAH.TEXT}
               </Radio>
             </Col>
-            <Col md={4} sm={8} xs={12}>
+            <Col sm={8} xs={12}>
               <Radio value={VISITORS.KICKS.VALUE}>{VISITORS.KICKS.TEXT}</Radio>
             </Col>
-            <Col md={4} sm={8} xs={12}>
-              <Radio value={VISITORS.FLICK.VALUE}>{VISITORS.FLICK.TEXT}</Radio>
-            </Col>
-            <Col md={4} sm={8} xs={12}>
-              <Radio value={VISITORS.CJ.VALUE}>{VISITORS.CJ.TEXT}</Radio>
-            </Col>
-            <Col md={4} sm={8} xs={12}>
+            <Col sm={8} xs={12}>
               <Radio value={VISITORS.LEIF.VALUE}>{VISITORS.LEIF.TEXT}</Radio>
             </Col>
-            <Col md={4} sm={8} xs={12}>
+            <Col sm={8} xs={12}>
               <Radio value={VISITORS.REDD.VALUE}>{VISITORS.REDD.TEXT}</Radio>
             </Col>
           </Row>

@@ -25,14 +25,6 @@ const VISITORS = {
     VALUE: 3,
     TEXT: "Kicks"
   },
-  FLICK: {
-    VALUE: 4,
-    TEXT: "Flick"
-  },
-  CJ: {
-    VALUE: 5,
-    TEXT: "CJ"
-  },
   LEIF: {
     VALUE: 6,
     TEXT: "Leif"

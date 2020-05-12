@@ -13,8 +13,6 @@ import celesteIcon from "../../../../images/celesteIcon.png";
 import kicksIcon from "../../../../images/kicksIcon.png";
 import liefIcon from "../../../../images/liefIcon.png";
 import saharahIcon from "../../../../images/saharahIcon.png";
-import flickIcon from "../../../../images/flickIcon.png";
-import cjIcon from "../../../../images/cjIcon.png";
 import reddIcon from "../../../../images/reddIcon.png";
 
 const DELETE_SESSION = gql`
@@ -37,9 +35,7 @@ const SessionCard = ({
     hasCeleste,
     hasSaharah,
     hasKicks,
-    hasCJ,
     hasRedd,
-    hasFlick,
     hasLeif
   } = visitors;
   const currentUser = getUser();
@@ -102,9 +98,7 @@ const SessionCard = ({
         {hasKicks && <img src={kicksIcon} alt="Kicks Icon" title="Kicks"></img>}
         {console.log(hasLeif)}
         {hasLeif && <img src={liefIcon} alt="lief icon" title="Lief"></img>}
-        {hasFlick && <img src={flickIcon} alt="cj icon" title="Flick"></img>}
-        {hasCJ && <img src={cjIcon} alt="cj icon" title={"CJ"}></img>}
-        {hasRedd && <img src={reddIcon} alt="Redd icon" title={"CJ"}></img>}
+        {hasRedd && <img src={reddIcon} alt="Redd icon" title={"Redd"}></img>}
       </VisitorContainer>
     </CardContainer>
   );
