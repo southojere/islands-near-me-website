@@ -13,7 +13,8 @@ import {
   LocationWrapper,
   LocationLabel,
   Disclaimer,
-  VistorCheckBoxWrapper
+  VistorCheckBoxWrapper,
+  IsPrivateWrapper
 } from "./styles";
 import { EnvironmentOutlined } from "@ant-design/icons";
 import { VISITORS } from "../../../../constants";
@@ -51,7 +52,11 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
     );
   };
 
-  const RenderModelBody = ({ dodoCode, note }, errors, setFieldValue) => {
+  const RenderModelBody = (
+    { dodoCode, note, isPrivate },
+    errors,
+    setFieldValue
+  ) => {
     return (
       <>
         <FormItem
@@ -79,7 +84,16 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
             }}
           />
         </FormItem>
-        <br />
+
+        <IsPrivateWrapper>
+          <Checkbox
+            value={isPrivate}
+            onClick={() => setFieldValue("isPrivate", !isPrivate)}
+          >
+            Private (Hide DODO Code)
+          </Checkbox>
+        </IsPrivateWrapper>
+
         <TextArea
           rows={3}
           placeholder="note"
@@ -124,6 +138,7 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
             </Row>
           </Checkbox.Group>
         </VistorCheckBoxWrapper>
+
         <LocationWrapper onClick={() => fetchLocation(setFieldValue)}>
           <Button
             type="primary"
@@ -157,7 +172,8 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
           latitude: "",
           longitude: ""
         },
-        visitors: []
+        visitors: [],
+        isPrivate: false
       }}
       validationSchema={() =>
         yup.object().shape({
@@ -186,7 +202,8 @@ const SessionModal = ({ onCancel, onComplete, opened, ...formikProps }) => {
               hasKicks: values.visitors.indexOf(VISITORS.KICKS.VALUE) !== -1,
               hasSaharah:
                 values.visitors.indexOf(VISITORS.SAHARAH.VALUE) !== -1,
-              hasCeleste: values.visitors.indexOf(VISITORS.CELESTE.VALUE) !== -1
+              hasCeleste: values.visitors.indexOf(VISITORS.CELESTE.VALUE) !== -1,
+              isPrivate: values.isPrivate,
             }
           }
         })

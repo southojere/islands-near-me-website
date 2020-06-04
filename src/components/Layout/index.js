@@ -4,18 +4,12 @@ import { useHistory } from "react-router-dom";
 import { useQuery } from "react-apollo";
 import { gql } from "apollo-boost";
 import { get } from "lodash";
-import { useMutation } from "@apollo/react-hooks";
-import {
-  WifiOutlined,
-  DeleteOutlined,
-  ControlOutlined
-} from "@ant-design/icons";
-import { Button, Tooltip } from "antd";
+import { WifiOutlined } from "@ant-design/icons";
+import { Button, Badge } from "antd";
 
-import { HomeIcon, SessionActions, SessionActionsWrapper } from "./styles";
+import { HomeIcon } from "./styles";
 
-import useWindowSize from "../../hooks/useWindow";
-import { TABLET_THRESHOLD_WIDTH } from "../../constants";
+import { AppDrawer } from "./components/AppDrawer";
 
 const Header = styled.div`
   display: flex;
@@ -41,127 +35,44 @@ const Margin = styled.div`
   padding-right: 1rem;
 `;
 
-const ME = gql`
-  query me {
-    me {
+const LIST_MY_REQUESTS = gql`
+  query listRequests {
+    listRequests {
       id
-      username
-      session {
-        id
-        dodoCode
-        isFull
+      status {
+        label
+        code
       }
-    }
-  }
-`;
-
-const DELETE_SESSION = gql`
-  mutation($id: Int!) {
-    deleteSession(id: $id)
-  }
-`;
-
-const MARK_SESSION_FULL = gql`
-  mutation($id: Int!) {
-    toggleSessionFull(id: $id) {
-      id
-      dodoCode
-      note
-      hostId
-      isFull
+      session {
+        dodoCode
+        isPrivate
+        note
+        host {
+          id
+          username
+          islandName
+        }
+      }
+      message
     }
   }
 `;
 
 const Layout = props => {
   const history = useHistory();
-  const [width] = useWindowSize();
+  const [displayDrawer, setDrawerVisible] = React.useState(false);
   const date = new Date();
 
-  const [deleteSession, { loading }] = useMutation(DELETE_SESSION);
-  const [toggleSessionFull, { loading: markFullLoading }] = useMutation(
-    MARK_SESSION_FULL
-  );
-  const { data, loading: loadingUser } = useQuery(ME);
+  const { data } = useQuery(LIST_MY_REQUESTS);
+  const requests = get(data, "listRequests", []);
 
-  const activeSession = get(data, "me.session");
+  //   const activeSession = get(data, "me.session");
 
-  const handleDelete = () => {
-    if (!activeSession) return;
-    deleteSession({
-      variables: {
-        id: parseInt(activeSession.id)
-      }
-    })
-      .then(() => {
-        window.location.reload();
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  const showDrawer = () => {
+    setDrawerVisible(true);
   };
-
-  const handleMarkSessionFull = () => {
-    toggleSessionFull({
-      variables: {
-        id: parseInt(activeSession.id)
-      }
-    })
-      .then(() => {
-        window.location.reload();
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
-  const RenderSessionActions = () => {
-    if (loadingUser) {
-      return null;
-    }
-
-    if (activeSession) {
-      return (
-        <SessionActionsWrapper>
-            <div className="left">
-                Current Session
-            </div>
-          <SessionActions>
-            {width < TABLET_THRESHOLD_WIDTH && (
-              <span>
-                {activeSession.isFull ? "Show DODO Code" : "Mark Session Full"}
-              </span>
-            )}
-            <Tooltip
-              placement="left"
-              title={activeSession.isFull ? "Show dodo code" : "Hide dodo code"}
-            >
-              <Button
-                onClick={handleMarkSessionFull}
-                type="primary"
-                shape="circle"
-                icon={<ControlOutlined spin={markFullLoading} />}
-              />
-            </Tooltip>
-
-            <Tooltip
-              placement="left"
-              title={`End Session ${activeSession.dodoCode}`}
-            >
-              <Button
-                danger
-                onClick={handleDelete}
-                loading={loading}
-                type="primary"
-                shape="circle"
-                icon={<DeleteOutlined />}
-              />
-            </Tooltip>
-          </SessionActions>
-        </SessionActionsWrapper>
-      );
-    }
-    return null;
+  const onClose = () => {
+    setDrawerVisible(false);
   };
 
   return (
@@ -179,7 +90,23 @@ const Layout = props => {
         </span>
         <WifiOutlined />
       </Header>
-      <RenderSessionActions />
+      {/* <RenderSessionActions /> */}
+      {requests.length > 0 && (
+        <AppDrawer
+          onClose={onClose}
+          showDrawer={showDrawer}
+          visible={displayDrawer}
+          requests={requests}
+        >
+          <Button>
+            <Badge
+              count={requests ? requests.length : 0}
+              style={{ backgroundColor: "#ee9f6e" }}
+            />
+            &nbsp; Join Requests
+          </Button>
+        </AppDrawer>
+      )}
       <Margin>{props.children}</Margin>
     </div>
   );

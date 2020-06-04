@@ -1,9 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { LoaderWrapper } from "./style";
 
-function Loader() {
+const Loader = ({ color }) => {
   return (
-    <LoaderWrapper>
+    <LoaderWrapper color={color}>
       <div className="la-ball-spin-clockwise">
         <div></div>
         <div></div>
@@ -16,6 +17,14 @@ function Loader() {
       </div>
     </LoaderWrapper>
   );
-}
+};
+
+Loader.defaultProps = {
+  color: "#fff"
+};
+
+Loader.propTypes = {
+  color: PropTypes.string
+};
 
 export default Loader;

@@ -16,7 +16,7 @@ const LoaderWrapper = styled.div`
   .la-ball-spin-clockwise {
     display: block;
     font-size: 0;
-    color: #fff;
+    color: ${props => props.color};
   }
   .la-ball-spin-clockwise.la-dark {
     color: #333;

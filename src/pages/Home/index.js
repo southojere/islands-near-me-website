@@ -9,6 +9,8 @@ import logoutIcon from "../../images/nookmiles.png";
 import aboutIcon from "../../images/islandinfo.png";
 import customDesignsIcon from "../../images/customdesigns.png";
 import passportIcon from "../../images/passportIcon.png";
+import nookMapIcon from "../../images/nookMapIcon.png";
+import callresident from "../../images/callresident.png";
 
 import {
   PageWrapper,
@@ -30,6 +32,12 @@ menu.AUTH_USER = [
     label: "Islands",
     link: "/islandsnearme",
     backgroundColor: "radial-gradient(#eebd77,#ed8067 );"
+  },
+  {
+    icon: <img src={nookMapIcon} alt="Map Icon"></img>,
+    label: "My Session",
+    link: "/current-session",
+    backgroundColor: "#80d6bd;"
   },
   {
     icon: <img src={serviceIcon} alt="Feature requests icon"></img>,

@@ -14,22 +14,22 @@ import Layout from "./components/Layout/index";
 import Signup from "./pages/SignUp";
 import IslandsNearMe from "./pages/IslandList";
 import FeatureRequests from "./pages/FeatureRequests";
+import Session from "./pages/MySession";
 import { getUser } from "./helpers/local-storage";
 
-// const PrivateRoute = props => {
-//   const user = getUserSession();
-//   console.log(user);
-//   return user ? (
-//     <Route {...props} />
-//   ) : (
-//     <Redirect
-//       to={{
-//         pathname: "/login",
-//         state: { from: props.location }
-//       }}
-//     />
-//   );
-// };
+const PrivateRoute = props => {
+  const user = getUser();
+  return user ? (
+    <Route {...props} />
+  ) : (
+    <Redirect
+      to={{
+        pathname: "/login",
+        state: { from: props.location }
+      }}
+    />
+  );
+};
 
 const Routes = () => {
   const user = getUser();
@@ -56,7 +56,7 @@ const Routes = () => {
           <PublicLoggedOutRoute exact path="/login" component={Login} />
           <PublicLoggedOutRoute exact path="/signup" component={Signup} />
           <Route exact path="/" component={Home} />
-          {/* <PrivateRoute exact path="/return-list" component={ReturnList} /> */}
+          <PrivateRoute exact path="/current-session/" component={Session} />
           <Route component={NotFound} />
         </Switch>
       </Layout>

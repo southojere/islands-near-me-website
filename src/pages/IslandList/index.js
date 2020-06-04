@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Select, Slider, Col, Row, Radio } from "antd";
 
-import SessionCard from "./components/SessionCard";
+import { SessionCard } from "./components/SessionCard";
 import SessionModal from "./components/CreateSessionModal";
 import {
   Header,
@@ -47,6 +47,7 @@ const SESSIONS_QUERY = gql`
         hostId
         dodoCode
         isFull
+        isPrivate
         latitude
         longitude
         host {

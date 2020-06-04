@@ -29,7 +29,20 @@ const Disclaimer = styled.div`
 `;
 
 const VistorCheckBoxWrapper = styled.div`
-  margin-top:1rem;
+  margin-top: 1rem;
 `;
 
-export { FormItem, LocationWrapper, LocationLabel, Disclaimer, VistorCheckBoxWrapper };
+const IsPrivateWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 10px 0;
+`;
+
+export {
+  FormItem,
+  LocationWrapper,
+  LocationLabel,
+  Disclaimer,
+  VistorCheckBoxWrapper,
+  IsPrivateWrapper
+};

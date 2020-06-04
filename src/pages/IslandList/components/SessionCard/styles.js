@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { CloseCircleTwoTone } from "@ant-design/icons";
+import { Button } from "antd";
 
 const CardContainer = styled.div`
   position: relative;
@@ -39,9 +40,13 @@ const VisitorContainer = styled.div``;
 
 const Badge = styled.span`
   border-radius: 5px;
-  padding:3px;
-  background:#FF3643;
+  padding: 3px;
+  background: #ff3643;
   color: white;
 `;
 
-export { CardContainer, CloseIcon, VisitorContainer, Badge};
+const RequestButton = styled(Button)`
+  margin-left: 5px;
+`;
+
+export { CardContainer, CloseIcon, VisitorContainer, Badge, RequestButton };

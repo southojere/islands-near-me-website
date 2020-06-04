@@ -89,6 +89,9 @@ const GlobalStyle = createGlobalStyle`
       ) !important;
     }
   }
+  .ant-drawer-content-wrapper {
+      width:300px !important;
+  }
 
 `;
 
