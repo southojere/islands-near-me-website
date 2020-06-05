@@ -63,7 +63,9 @@ const Layout = props => {
   const [displayDrawer, setDrawerVisible] = React.useState(false);
   const date = new Date();
 
-  const { data } = useQuery(LIST_MY_REQUESTS);
+  const { data } = useQuery(LIST_MY_REQUESTS, {
+      pollInterval: 10000
+  });
   const requests = get(data, "listRequests", []);
 
   //   const activeSession = get(data, "me.session");
