@@ -16,10 +16,10 @@ const RequestContainer = styled.div`
   ul li {
     display: flex;
     align-items: center;
-    padding:0;
   }
   ul {
     margin: 0;
+    padding:0;
   }
   p {
       margin:0;
