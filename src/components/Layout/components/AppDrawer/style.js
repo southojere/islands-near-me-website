@@ -5,6 +5,9 @@ const SessionWrapper = styled.div`
     background:#f8f3e7;
     border-radius:15px;
     margin-bottom: 1rem;
+    p {
+        margin:0
+    }
 `;
 
 export { SessionWrapper };

@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 const SessionContainer = styled.div`
   color: white;
+  p {
+      margin:0;
+  }
 `;
 
 const VisitorContainer = styled.div`
