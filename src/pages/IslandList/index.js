@@ -326,6 +326,9 @@ const IslandsNearMe = ({ client }) => {
             <Col sm={8} xs={12}>
               <Radio value={VISITORS.REDD.VALUE}>{VISITORS.REDD.TEXT}</Radio>
             </Col>
+            <Col sm={8} xs={12}>
+              <Radio value={null}>{'none'}</Radio>
+            </Col>
           </Row>
         </Radio.Group>
       </RadioContainer>
